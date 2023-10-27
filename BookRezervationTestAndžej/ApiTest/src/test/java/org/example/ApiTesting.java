@@ -38,8 +38,9 @@ public class ApiTesting {
                 log().body();
 
     }
+
     @Test
-            void findCategory(){
+    void findCategory() {
 
         given().
 
@@ -49,9 +50,10 @@ public class ApiTesting {
                 then().
                 log().body().
                 assertThat().
-                body("name[0]", equalTo("Julius"));
+                body("name[0]", equalTo("Sparkis"));
 
     }
+
     @Test
     void addWrongCategory() {
 
@@ -70,5 +72,24 @@ public class ApiTesting {
                 statusCode(500).
                 log().body();
 
+    }
+
+    @Test
+    void deleteCategory() {
+
+        Map<String, String> book = new HashMap<>();
+        book.put("name", "Sparkis");
+
+
+        given().
+
+                contentType(ContentType.JSON).
+                body(book).
+
+                when().
+                delete("http://localhost:8080/categories").
+                then().
+                statusCode(204).
+                log().body();
     }
 }
