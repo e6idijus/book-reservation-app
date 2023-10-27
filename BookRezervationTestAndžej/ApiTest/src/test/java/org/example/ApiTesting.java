@@ -21,7 +21,7 @@ public class ApiTesting {
     }
 
     @Test
-    void addCategory() {
+    void addCategoryName() {
 
         Map<String, String> book = new HashMap<>();
         book.put("name", "Sparkis");
@@ -40,7 +40,7 @@ public class ApiTesting {
     }
 
     @Test
-    void findCategory() {
+    void findCategoryName() {
 
         given().
 
@@ -55,7 +55,7 @@ public class ApiTesting {
     }
 
     @Test
-    void addWrongCategory() {
+    void addWrongCategoryName() {
 
         Map<String, String> book = new HashMap<>();
         book.put("name", "Sparkis ir Draugai");
@@ -75,7 +75,7 @@ public class ApiTesting {
     }
 
     @Test
-    void deleteCategory() {
+    void deleteByCategoryName() {
 
         Map<String, String> book = new HashMap<>();
         book.put("name", "Sparkis");
@@ -89,7 +89,28 @@ public class ApiTesting {
                 when().
                 delete("http://localhost:8080/categories").
                 then().
-                statusCode(204).
+                statusCode(405).
+                log().body();
+    }
+
+    @Test
+    void findByCategoryId() {
+        int id = 3;
+        given().pathParams("id", id).
+                when().
+                get("http://localhost:8080/categories/{id}").
+                then().
+                statusCode(200).
+                log().body();
+    }
+    @Test
+    void deleteByCategoryId() {
+        int id = 3;
+        given().pathParams("id", id).
+                when().
+                delete("http://localhost:8080/categories/{id}").
+                then().
+                statusCode(405).
                 log().body();
     }
 }
