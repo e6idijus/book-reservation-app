@@ -14,7 +14,8 @@ public class Category {
 
     @NotNull
     @NotEmpty
-    @Pattern(regexp = "^(?!.*(.)\\1)[A-Z][a-zA-Z]{4,49}$")
+    @Pattern(regexp = "^(?!.*(.)\\1)[A-Z][a-z]{4,49}$")
+    @Column(unique = true)
     private String name;
 
     public int getId() {
