@@ -1,15 +1,20 @@
 package org.example;
 
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 public class ApiTesting {
+    String name = "Biology";
+
+    int id = 3;
+
     @Test
     void getCategoriesName() {
 
@@ -24,7 +29,7 @@ public class ApiTesting {
     void addCategoryName() {
 
         Map<String, String> book = new HashMap<>();
-        book.put("name", "Sparkis");
+        book.put("name", name);
 
 
         given().
@@ -35,6 +40,7 @@ public class ApiTesting {
                 when().
                 post("http://localhost:8080/categories").
                 then().
+                statusCode(201).
                 log().body();
 
     }
@@ -56,20 +62,19 @@ public class ApiTesting {
 
     @Test
     void addWrongCategoryName() {
-
-        Map<String, String> book = new HashMap<>();
-        book.put("name", "Sparkis ir Draugai");
-
+        Map<String, String> categories = new HashMap<>();
+        categories.put("name", "geography");
 
         given().
-
                 contentType(ContentType.JSON).
-                body(book).
-
+                body(categories).
                 when().
                 post("http://localhost:8080/categories").
                 then().
-                statusCode(500).
+                assertThat().
+                contentType(ContentType.TEXT).
+                statusCode(400).
+                body(equalTo("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters")).
                 log().body();
 
     }
@@ -78,7 +83,7 @@ public class ApiTesting {
     void deleteByCategoryName() {
 
         Map<String, String> book = new HashMap<>();
-        book.put("name", "Sparkis");
+        book.put("name", name);
 
 
         given().
@@ -95,7 +100,7 @@ public class ApiTesting {
 
     @Test
     void findByCategoryId() {
-        int id = 3;
+
         given().pathParams("id", id).
                 when().
                 get("http://localhost:8080/categories/{id}").
@@ -103,9 +108,10 @@ public class ApiTesting {
                 statusCode(200).
                 log().body();
     }
+
     @Test
     void deleteByCategoryId() {
-        int id = 3;
+
         given().pathParams("id", id).
                 when().
                 delete("http://localhost:8080/categories/{id}").
@@ -113,4 +119,46 @@ public class ApiTesting {
                 statusCode(405).
                 log().body();
     }
+
+    @Test
+    public void validationTest() {
+
+        String validationNullEmpty = "{ \"name\": null }";
+
+
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(validationNullEmpty)
+                .when()
+                .post("/categories");
+
+
+        response.then().statusCode(400)
+                .contentType(ContentType.TEXT);
+
+
+        response.then().body(containsString("The field must not be empty"))
+                .body(containsString("The field must not be null"));
+    }
+
+        @Test
+        public void validationFormTest() {
+
+            String requestBody = "{ \"name\": \"invalid-category-name123\" }";
+
+
+            Response response = given()
+                    .contentType(ContentType.JSON)
+                    .body(requestBody)
+                    .when()
+                    .post("/categories");
+
+            response.then().statusCode(400);
+
+
+            response.then().body(containsString("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters"));
+        }
 }
+
+
