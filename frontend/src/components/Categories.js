@@ -16,7 +16,8 @@ export default function Categories() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [categories]);
+
   return (
     <div className="container">
       <label htmlFor="category">Current categories:</label>
