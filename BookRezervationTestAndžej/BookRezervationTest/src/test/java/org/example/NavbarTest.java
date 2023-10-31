@@ -12,4 +12,11 @@ public class NavbarTest extends BaseTestPage {
         mainPage.clickLogo();
         assertEquals("Welcome to Home!",driver.findElement(By.xpath("//div[@id='root']//div[.='Welcome to Home!']")).getText());
     }
+    @Test
+    void enterCategories(){
+        MainPage mainPage = new MainPage(driver);
+        mainPage.clickCategories();
+        assertEquals("Current categories:", driver.findElement(By.cssSelector("label")).getText());
+
+    }
 }

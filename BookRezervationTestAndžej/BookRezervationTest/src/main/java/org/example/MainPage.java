@@ -7,6 +7,8 @@ public class MainPage{
     WebDriver driver;
 
     By clickLogo = By.cssSelector("img[alt='Book Reservation App Logo']");
+    By clickCategories = By.linkText("Categories");
+
 
 
     public MainPage(WebDriver driver) {
@@ -14,6 +16,9 @@ public class MainPage{
     }
     public void clickLogo(){
         driver.findElement(clickLogo).click();
+    }
+    public void clickCategories(){
+        driver.findElement(clickCategories).click();
     }
 
 }

@@ -131,7 +131,7 @@ public class ApiTesting {
                 .contentType(ContentType.JSON)
                 .body(validationNullEmpty)
                 .when()
-                .post("/categories");
+                .post("http://localhost:8080/categories");
 
 
         response.then().statusCode(400)
@@ -152,7 +152,7 @@ public class ApiTesting {
                     .contentType(ContentType.JSON)
                     .body(requestBody)
                     .when()
-                    .post("/categories");
+                    .post("http://localhost:8080/categories");
 
             response.then().statusCode(400);
 
