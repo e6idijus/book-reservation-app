@@ -1,28 +1,11 @@
 import { useEffect, useState } from "react";
 import Add from "./Add";
+import Edit from "./Edit";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [addClicked, setAddClicked] = useState(false);
-
-  useEffect(() => {
-    let active = true;
-
-    const fetchData = async () => {
-      const response = await fetch("http://localhost:8080/categories");
-      const data = await response.json();
-
-      if (active) {
-        setCategories(data);
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      active = false;
-    };
-  }, []);
+  const [editClicked, setEditClicked] = useState(false);
 
   return (
     <div className="container">
@@ -57,7 +40,14 @@ export default function Categories() {
       >
         Add new category
       </button>
+      <button
+        className="btn btn-info"
+        onClick={() => setEditClicked(true)}
+      >
+        Edit category
+      </button>
       {addClicked && <Add />}
+      {editClicked && <Edit />}
     </div>
   );
 }
