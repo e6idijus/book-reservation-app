@@ -1,29 +1,22 @@
 import { useEffect, useState } from "react";
 import Add from "./Add";
-
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [addClicked, setAddClicked] = useState(false);
-
   useEffect(() => {
     let active = true;
-
     const fetchData = async () => {
       const response = await fetch("http://localhost:8080/categories");
       const data = await response.json();
-
       if (active) {
         setCategories(data);
       }
     };
-
     fetchData();
-
     return () => {
       active = false;
     };
   }, []);
-
   return (
     <div className="container">
       <label htmlFor="category">Current categories:</label>
@@ -39,7 +32,6 @@ export default function Categories() {
         >
           Select a category
         </option>
-
         {categories.map((category, index) => {
           return (
             <option
