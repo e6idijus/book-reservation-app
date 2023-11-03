@@ -3,17 +3,22 @@ package org.example;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ApiTesting {
-    String name = "Biology";
+    String nameToAdd = "Samanele";
 
-    int id = 3;
+    int id = 1;
 
     @Test
     void getCategoriesName() {
@@ -29,7 +34,7 @@ public class ApiTesting {
     void addCategoryName() {
 
         Map<String, String> book = new HashMap<>();
-        book.put("name", name);
+        book.put("name", nameToAdd);
 
 
         given().
@@ -40,23 +45,23 @@ public class ApiTesting {
                 when().
                 post("http://localhost:8080/categories").
                 then().
-                statusCode(201).
-                log().body();
+                statusCode(201);
+
+
 
     }
 
     @Test
     void findCategoryName() {
+        String expectedName = "Biology";
 
-        given().
-
-
+        given().pathParams("id", id).
                 when().
-                get("http://localhost:8080/categories").
+                get("http://localhost:8080/categories/{id}").
                 then().
-                log().body().
                 assertThat().
-                body("name[0]", equalTo("Sparkis"));
+                body("name", equalTo(expectedName)).
+                log().body();
 
     }
 
@@ -83,7 +88,7 @@ public class ApiTesting {
     void deleteByCategoryName() {
 
         Map<String, String> book = new HashMap<>();
-        book.put("name", name);
+        book.put("name", nameToAdd);
 
 
         given().
@@ -94,19 +99,21 @@ public class ApiTesting {
                 when().
                 delete("http://localhost:8080/categories").
                 then().
-                statusCode(405).
-                log().body();
+                statusCode(405);
+
     }
 
     @Test
     void findByCategoryId() {
-
+        int expectedId = 1;
         given().pathParams("id", id).
                 when().
                 get("http://localhost:8080/categories/{id}").
                 then().
                 statusCode(200).
-                log().body();
+                assertThat().
+                body("id", equalTo(expectedId)).log().body();
+
     }
 
     @Test
@@ -126,7 +133,6 @@ public class ApiTesting {
         String validationNullEmpty = "{ \"name\": null }";
 
 
-
         Response response = given()
                 .contentType(ContentType.JSON)
                 .body(validationNullEmpty)
@@ -142,23 +148,48 @@ public class ApiTesting {
                 .body(containsString("The field must not be null"));
     }
 
-        @Test
-        public void validationFormTest() {
+    @Test
+    public void validationFormTest() {
 
-            String requestBody = "{ \"name\": \"invalid-category-name123\" }";
-
-
-            Response response = given()
-                    .contentType(ContentType.JSON)
-                    .body(requestBody)
-                    .when()
-                    .post("http://localhost:8080/categories");
-
-            response.then().statusCode(400);
+        String requestBody = "{ \"name\": \"invalid-category-name123\" }";
 
 
-            response.then().body(containsString("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters"));
-        }
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post("http://localhost:8080/categories");
+
+        response.then().statusCode(400);
+
+
+        response.then().body(containsString("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters"));
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(files = "src/main/resources/Categories.csv")
+    void parameterizedTest(String categoryName) {
+
+        Map<String, String> book = new HashMap<>();
+        book.put("name", categoryName);
+
+
+        given().
+
+                contentType(ContentType.JSON).
+                body(book).
+
+                when().
+                post("http://localhost:8080/categories").
+                then().
+                statusCode(201);
+
+
+    }
+
 }
+
+
+
 
 
