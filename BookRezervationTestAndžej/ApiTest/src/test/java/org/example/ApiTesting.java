@@ -6,14 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ApiTesting {
     String nameToAdd = "Biology";
@@ -47,7 +43,6 @@ public class ApiTesting {
                 post(url).
                 then().
                 statusCode(201);
-
 
 
     }
@@ -148,6 +143,7 @@ public class ApiTesting {
         response.then().body(containsString("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters")).
                 body(containsString("The field must not be empty"));
     }
+
     @Test
     public void addNullCategory() {
 
@@ -186,8 +182,9 @@ public class ApiTesting {
 
         response.then().body(containsString("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters"));
     }
+
     @Test
-    void addExistedCategory(){
+    void addExistedCategory() {
         Map<String, String> categories = new HashMap<>();
         categories.put("name", nameToAdd);
 
@@ -226,7 +223,25 @@ public class ApiTesting {
 
     }
 
+    @Test
+    void checkListMassive() {
+        Response response = given()
+                .when()
+                .get(url)
+                .then()
+                .statusCode(200)
+                .extract()
+                .response();
+
+
+        response.then().body("$", everyItem(hasKey("id"))).body("$", everyItem(hasKey("name")));
+
+    }
 }
+
+
+
+
 
 
 

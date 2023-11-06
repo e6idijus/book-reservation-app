@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CategoriesTestMobile extends BaseTestPageMobile{
+public class NavBarTestMobile extends BaseTestPageMobile{
 
     @Test
     void logoButtonTest(){
