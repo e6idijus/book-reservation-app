@@ -129,9 +129,29 @@ public class ApiTesting {
     }
 
     @Test
-    public void validationTest() {
+    public void addEmptyCategory() {
 
-        String validationNullEmpty = "{ \"name\": null }";
+        String validationNullEmpty = "{ \"name\": \"\" }";
+
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(validationNullEmpty)
+                .when()
+                .post(url);
+
+
+        response.then().statusCode(400)
+                .contentType(ContentType.TEXT);
+
+
+        response.then().body(containsString("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters")).
+                body(containsString("The field must not be empty"));
+    }
+    @Test
+    public void addNullCategory() {
+
+        String validationNullEmpty = "{}";
 
 
         Response response = given()
@@ -167,9 +187,9 @@ public class ApiTesting {
         response.then().body(containsString("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters"));
     }
     @Test
-    void existedCategory(){
+    void addExistedCategory(){
         Map<String, String> categories = new HashMap<>();
-        categories.put("name", "Biology");
+        categories.put("name", nameToAdd);
 
         given().
                 contentType(ContentType.JSON).
