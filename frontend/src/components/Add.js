@@ -90,11 +90,7 @@ export default function Add({ setAddClicked }) {
         Add
       </button>
       <button
-<<<<<<< HEAD
-        className="btn btn-warning"
-=======
         className="btn btn-warning ms-2"
->>>>>>> be27b43c5e2bf9669c98673fe13159ea51b6574a
         type="button"
         onClick={() => {
           setAddClicked(false);
