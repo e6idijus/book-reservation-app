@@ -16,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ApiTesting {
-    String nameToAdd = "Samanele";
+    String nameToAdd = "Biology";
+    String url = "http://localhost:8080/categories";
 
     int id = 1;
 
@@ -25,7 +26,7 @@ public class ApiTesting {
 
         given().
                 when().
-                get("http://localhost:8080/categories").
+                get(url).
                 then().
                 statusCode(200).log().all();
     }
@@ -43,7 +44,7 @@ public class ApiTesting {
                 body(book).
 
                 when().
-                post("http://localhost:8080/categories").
+                post(url).
                 then().
                 statusCode(201);
 
@@ -57,11 +58,11 @@ public class ApiTesting {
 
         given().pathParams("id", id).
                 when().
-                get("http://localhost:8080/categories/{id}").
+                get(url + "/{id}").
                 then().
                 assertThat().
-                body("name", equalTo(expectedName)).
-                log().body();
+                body("name", equalTo(expectedName));
+
 
     }
 
@@ -74,13 +75,13 @@ public class ApiTesting {
                 contentType(ContentType.JSON).
                 body(categories).
                 when().
-                post("http://localhost:8080/categories").
+                post(url).
                 then().
                 assertThat().
                 contentType(ContentType.TEXT).
                 statusCode(400).
-                body(equalTo("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters")).
-                log().body();
+                body(equalTo("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters"));
+
 
     }
 
@@ -97,7 +98,7 @@ public class ApiTesting {
                 body(book).
 
                 when().
-                delete("http://localhost:8080/categories").
+                delete(url).
                 then().
                 statusCode(405);
 
@@ -108,11 +109,11 @@ public class ApiTesting {
         int expectedId = 1;
         given().pathParams("id", id).
                 when().
-                get("http://localhost:8080/categories/{id}").
+                get(url + "/{id}").
                 then().
                 statusCode(200).
                 assertThat().
-                body("id", equalTo(expectedId)).log().body();
+                body("id", equalTo(expectedId));
 
     }
 
@@ -121,10 +122,10 @@ public class ApiTesting {
 
         given().pathParams("id", id).
                 when().
-                delete("http://localhost:8080/categories/{id}").
+                delete(url + "/{id}").
                 then().
-                statusCode(405).
-                log().body();
+                statusCode(405);
+
     }
 
     @Test
@@ -137,7 +138,7 @@ public class ApiTesting {
                 .contentType(ContentType.JSON)
                 .body(validationNullEmpty)
                 .when()
-                .post("http://localhost:8080/categories");
+                .post(url);
 
 
         response.then().statusCode(400)
@@ -158,12 +159,30 @@ public class ApiTesting {
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()
-                .post("http://localhost:8080/categories");
+                .post(url);
 
         response.then().statusCode(400);
 
 
         response.then().body(containsString("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters"));
+    }
+    @Test
+    void existedCategory(){
+        Map<String, String> categories = new HashMap<>();
+        categories.put("name", "Biology");
+
+        given().
+                contentType(ContentType.JSON).
+                body(categories).
+                when().
+                post(url).
+                then().
+                assertThat().
+                contentType(ContentType.TEXT).
+                statusCode(400).
+                body(equalTo("Category already exists"));
+
+
     }
 
     @ParameterizedTest
@@ -180,7 +199,7 @@ public class ApiTesting {
                 body(book).
 
                 when().
-                post("http://localhost:8080/categories").
+                post(url).
                 then().
                 statusCode(201);
 
