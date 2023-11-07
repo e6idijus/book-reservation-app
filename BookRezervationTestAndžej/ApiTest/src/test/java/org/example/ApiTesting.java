@@ -50,6 +50,7 @@ public class ApiTesting {
 
 
     }
+
     @Test
     void addExistingCategoryName() {
 
@@ -69,18 +70,19 @@ public class ApiTesting {
                 body(equalTo("Category already exists"));
 
     }
-        @Test
-    void findCategoryName() {
-        String expectedName = "Biology";
 
-        given().pathParams("id", id).
-                when().
-                get(url + "/{id}").
-                then().
-                assertThat().
-                body("name", equalTo(expectedName));
+    @Test
+    public void findCategoryNameInTheList() {
+        String categoryName = "Biology";
 
-
+        Response response = given()
+                .baseUri("http://localhost:8080")
+                .when()
+                .get("/categories");
+        response.then()
+                .statusCode(200);
+        response.then()
+                .body("name", hasItem(categoryName));
     }
 
     @Test
@@ -128,7 +130,7 @@ public class ApiTesting {
                 when().
                 get(url + "/{id}").
                 then().
-                statusCode(200).
+                statusCode(200).log().body().
                 assertThat().
                 body("id", equalTo(expectedId));
 
@@ -269,6 +271,7 @@ public class ApiTesting {
                 then().
                 statusCode(404);
     }
+
     @Test
     void requestWithIncorrectHttpMethod() {
 
@@ -279,8 +282,15 @@ public class ApiTesting {
                 statusCode(405);
     }
 
-
 }
+
+
+
+
+
+
+
+
 
 
 
