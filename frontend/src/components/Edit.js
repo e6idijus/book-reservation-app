@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AlertMessage from "./AlertMessage";
 
-export default function Edit() {
+export default function Edit({
+  selectedCategoryId,
+  setEditClicked,
+  setSelectCategoryActive,
+  setEditBtnActive,
+}) {
   const [categoryField, setCategoryField] = useState({
     name: "",
   });
@@ -9,6 +14,30 @@ export default function Edit() {
     name: "",
     type: "",
   });
+
+  useEffect(() => {
+    let active = true;
+
+    const fetchData = async () => {
+      const response = await fetch(
+        `http://localhost:8080/categories/${selectedCategoryId}`
+      );
+      const data = await response.json();
+
+      if (active) {
+        setCategoryField({
+          ...categoryField,
+          name: data.name,
+        });
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const handleMessages = (messageText, messageType) => {
     setMessage({
@@ -41,17 +70,20 @@ export default function Edit() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/categories", {
-        method: "POST",
-        body: JSON.stringify(dataToPost),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `http://localhost:8080/categories/${selectedCategoryId}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(dataToPost),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.ok) {
         // Successful response (2xx status code)
-        handleMessages("Category created!", "success");
+        handleMessages("Category updated!", "success");
       } else if (response.status === 400) {
         const statusMessage = await response.text(); // Get the error message as plain text
         handleMessages(statusMessage, "danger");
@@ -65,6 +97,12 @@ export default function Edit() {
       alert(`An error occurred: ${error.message}`);
     }
   };
+
+  function handleCancelBtn() {
+    setEditClicked(false);
+    setSelectCategoryActive(true);
+    setEditBtnActive(false);
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -88,6 +126,13 @@ export default function Edit() {
         type="submit"
       >
         Update
+      </button>
+      <button
+        className="btn btn-warning"
+        type="button"
+        onClick={handleCancelBtn}
+      >
+        Cancel
       </button>
     </form>
   );
