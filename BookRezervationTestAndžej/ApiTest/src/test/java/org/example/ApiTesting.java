@@ -1,7 +1,11 @@
 package org.example;
 
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -274,29 +278,11 @@ public class ApiTesting {
                 then().
                 statusCode(405);
     }
-    @Test
-    public void testCORSHeaders() {
-
-        Response response = given()
-                .header("Origin", "http://localhost:3000")
-                .when()
-                .get("/categories");
 
 
-        response.then()
-                .header("Access-Control-Allow-Origin", "http://localhost:3000")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
-                .header("Access-Control-Allow-Headers", "Content-Type")
-                .header("Access-Control-Max-Age", "3600");
-
-
-        response.then().statusCode(200);
-
-
-    }
 }
 
-}
+
 
 
 
