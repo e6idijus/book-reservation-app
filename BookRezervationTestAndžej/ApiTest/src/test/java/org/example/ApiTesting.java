@@ -46,8 +46,26 @@ public class ApiTesting {
 
 
     }
-
     @Test
+    void addExistingCategoryName() {
+
+        Map<String, String> book = new HashMap<>();
+        book.put("name", nameToAdd);
+
+
+        given().
+
+                contentType(ContentType.JSON).
+                body(book).
+
+                when().
+                post(url).
+                then().
+                statusCode(400).
+                body(equalTo("Category already exists"));
+
+    }
+        @Test
     void findCategoryName() {
         String expectedName = "Biology";
 
@@ -237,9 +255,18 @@ public class ApiTesting {
         response.then().body("$", everyItem(hasKey("id"))).body("$", everyItem(hasKey("name")));
 
     }
+
+    @Test
+    void findByNotExistingCategoryId() {
+
+        given().pathParams("id", 666).
+                when().
+                get(url + "/{id}").
+                then().
+                statusCode(404);
+    }
+
 }
-
-
 
 
 
