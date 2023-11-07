@@ -265,6 +265,16 @@ public class ApiTesting {
                 then().
                 statusCode(404);
     }
+    @Test
+    void requestWithIncorrectHttpMethod() {
+
+
+        given().
+                when().
+                put(url).
+                then().
+                statusCode(405);
+    }
 
 }
 
