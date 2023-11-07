@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AlertMessage from "./AlertMessage";
 
-export default function Add() {
+export default function Add({ setAddClicked }) {
   const [categoryField, setCategoryField] = useState({
     name: "",
   });
@@ -70,7 +70,7 @@ export default function Add() {
     <form onSubmit={handleSubmit}>
       <label>Category title:</label>
       <input
-        className="form-control"
+        className="form-control mt-3"
         type="text"
         name="category"
         value={categoryField.name}
@@ -84,10 +84,19 @@ export default function Add() {
         />
       )}
       <button
-        className="btn btn-primary"
+        className="btn btn-primary mt-3 mb-3 "
         type="submit"
       >
         Add
+      </button>
+      <button
+        className="btn btn-warning ms-2"
+        type="button"
+        onClick={() => {
+          setAddClicked(false);
+        }}
+      >
+        Cancel
       </button>
     </form>
   );
