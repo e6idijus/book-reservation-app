@@ -8,7 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CategoriesTest extends BaseTestPage {
 
-    String categoryName = "history";
+    String categoryName = "Cats";
+
     @Test
     void addCategories() {
         MainPage mainPage = new MainPage(driver);
@@ -24,7 +25,7 @@ public class CategoriesTest extends BaseTestPage {
     }
 
     @Test
-    void findCreatedCategory(){
+    void findCreatedCategory() {
         MainPage mainPage = new MainPage(driver);
         CategoriesPage categoriesPage = new CategoriesPage(driver);
         mainPage.clickCategories();
@@ -33,17 +34,36 @@ public class CategoriesTest extends BaseTestPage {
         categoriesPage.inputNewCategory(categoryName);
         categoriesPage.clickAddCategory();
         categoriesPage.clickSelectCategory();
-        assertTrue(driver.findElement(By.cssSelector("select[name='category']")).getText().contains(categoryName));
+        assertTrue(driver.findElement(By.cssSelector("[name='category mt-3']")).getText().contains(categoryName));
     }
+
     @Test
-    void addInvalidCategory(){
+    void addInvalidCategory() {
         MainPage mainPage = new MainPage(driver);
         CategoriesPage categoriesPage = new CategoriesPage(driver);
         mainPage.clickCategories();
         categoriesPage.clickAddNewCategoryButton();
         categoriesPage.clickToEnterNewCategory();
-        categoriesPage.inputNewCategory(categoryName);
+        categoriesPage.inputNewCategory("geography");
         categoriesPage.clickAddCategory();
         assertEquals("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters", driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div")).getText());
+    }
+
+    @Test
+    void editCategory() {
+        MainPage mainPage = new MainPage(driver);
+        CategoriesPage categoriesPage = new CategoriesPage(driver);
+        mainPage.clickCategories();
+        categoriesPage.clickSelectCategory();
+        categoriesPage.selectValueOfCategories();
+        categoriesPage.clickEditButton();
+        categoriesPage.selectEditField();
+        categoriesPage.clearEditField();
+        categoriesPage.inputUpdatedCategory("s Games");
+        categoriesPage.clickUpdateButton();
+        assertEquals("Category updated!", driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div")).getText());
+        categoriesPage.clickSelectCategory();
+        assertTrue(driver.findElement(By.cssSelector("[name='category mt-3']")).getText().contains("Cats Games"));
+
     }
 }
