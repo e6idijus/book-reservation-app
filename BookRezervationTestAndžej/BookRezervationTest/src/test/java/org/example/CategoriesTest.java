@@ -35,10 +35,6 @@ public class CategoriesTest extends BaseTestPage {
         MainPage mainPage = new MainPage(driver);
         CategoriesPage categoriesPage = new CategoriesPage(driver);
         mainPage.clickCategories();
-        categoriesPage.clickAddNewCategoryButton();
-        categoriesPage.clickToEnterNewCategory();
-        categoriesPage.inputNewCategory(categoryName);
-        categoriesPage.clickAddCategory();
         categoriesPage.clickSelectCategory();
         assertTrue(driver.findElement(By.cssSelector("[name='category mt-3']")).getText().contains(categoryName));
     }

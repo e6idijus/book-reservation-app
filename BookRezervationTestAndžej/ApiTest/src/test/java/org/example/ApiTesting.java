@@ -2,7 +2,10 @@ package org.example;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +18,7 @@ import java.util.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
+
 
 public class ApiTesting {
     String nameToAdd = "Biology";
@@ -277,10 +281,38 @@ public class ApiTesting {
                 statusCode(405);
     }
 
+    @Test
+    @DisplayName("Update Category Name")
+    void updateCategoryName() {
+
+        String updatedName = "Rock";
+        int id = 1;
+
+        Map<String, String> updatedBook = new HashMap<>();
+        updatedBook.put("name", updatedName);
+
+        given()
+                .contentType(ContentType.JSON)
+                .pathParam("id", id)
+                .body(updatedBook)
+                .when()
+                .put(url + "/{id}")
+                .then()
+                .statusCode(200);
+
+
+        given()
+                .contentType(ContentType.JSON)
+                .pathParam("id", id)
+                .body(updatedBook)
+                .when()
+                .get(url + "/{id}")
+                .then()
+                .contentType(ContentType.JSON)
+                .body("name", equalTo(updatedName));
+
+    }
 }
-
-
-
 
 
 
