@@ -3,6 +3,8 @@ package org.example;
 import org.checkerframework.checker.units.qual.Time;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -68,6 +70,21 @@ public class CategoriesTest extends BaseTestPage {
         assertEquals("Category updated!", driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div")).getText());
         categoriesPage.clickSelectCategory();
         assertTrue(driver.findElement(By.cssSelector("[name='category mt-3']")).getText().contains("Cats Games"));
+
+    }
+    @Test
+    @Order(5)
+    void cancelUpdate(){
+        MainPage mainPage = new MainPage(driver);
+        CategoriesPage categoriesPage = new CategoriesPage(driver);
+        mainPage.clickCategories();
+        categoriesPage.clickSelectCategory();
+        Select select = new Select(driver.findElement(By.xpath("//div[@id='root']//select[@name='category mt-3']")));
+        select.selectByIndex(1);
+        categoriesPage.clickSelectCategory();
+        categoriesPage.clickEditButton();
+        categoriesPage.clickCancelToUpdate();
+        assertTrue(driver.findElement(By.xpath("/html//div[@id='root']//label[.='Current categories:']")).isDisplayed());
 
     }
 }
