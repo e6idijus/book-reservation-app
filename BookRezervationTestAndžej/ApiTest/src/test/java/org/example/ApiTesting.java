@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -22,6 +23,7 @@ public class ApiTesting {
     int id = 1;
 
     @Test
+    @DisplayName("Gets the full list of categories")
     void getCategoriesName() {
 
         given().
@@ -32,6 +34,7 @@ public class ApiTesting {
     }
 
     @Test
+    @DisplayName("Add new category name")
     void addCategoryName() {
 
         Map<String, String> book = new HashMap<>();
@@ -52,26 +55,7 @@ public class ApiTesting {
     }
 
     @Test
-    void addExistingCategoryName() {
-
-        Map<String, String> book = new HashMap<>();
-        book.put("name", nameToAdd);
-
-
-        given().
-
-                contentType(ContentType.JSON).
-                body(book).
-
-                when().
-                post(url).
-                then().
-                statusCode(400).
-                body(equalTo("Category already exists"));
-
-    }
-
-    @Test
+    @DisplayName("Checks if the category name can be found in the list")
     public void findCategoryNameInTheList() {
         String categoryName = "Biology";
 
@@ -86,6 +70,7 @@ public class ApiTesting {
     }
 
     @Test
+    @DisplayName("Checks whether it is possible to add a category name that does not meet the validation")
     void addWrongCategoryName() {
         Map<String, String> categories = new HashMap<>();
         categories.put("name", "geography");
@@ -124,6 +109,7 @@ public class ApiTesting {
     }
 
     @Test
+    @DisplayName("Checks whether the category name can be found by id")
     void findByCategoryId() {
         int expectedId = 1;
         given().pathParams("id", id).
@@ -137,6 +123,7 @@ public class ApiTesting {
     }
 
     @Test
+    @DisplayName("Checks whether the system allows deleting the category name according to id")
     void deleteByCategoryId() {
 
         given().pathParams("id", id).
@@ -148,6 +135,7 @@ public class ApiTesting {
     }
 
     @Test
+    @DisplayName("Checks whether the system does not allow adding a name that is empty")
     public void addEmptyCategory() {
 
         String validationNullEmpty = "{ \"name\": \"\" }";
@@ -169,6 +157,7 @@ public class ApiTesting {
     }
 
     @Test
+    @DisplayName("Checks whether the system does not allow adding a name that is null")
     public void addNullCategory() {
 
         String validationNullEmpty = "{}";
@@ -190,6 +179,7 @@ public class ApiTesting {
     }
 
     @Test
+    @DisplayName("Checks whether the system does not allow adding a name that does not meet the validation")
     public void validationFormTest() {
 
         String requestBody = "{ \"name\": \"invalid-category-name123\" }";
@@ -208,6 +198,7 @@ public class ApiTesting {
     }
 
     @Test
+    @DisplayName("Adds a category that has already been added before")
     void addExistedCategory() {
         Map<String, String> categories = new HashMap<>();
         categories.put("name", nameToAdd);
@@ -227,6 +218,7 @@ public class ApiTesting {
     }
 
     @ParameterizedTest
+    @DisplayName("Adds categories that should pass by validation")
     @CsvFileSource(files = "src/main/resources/Categories.csv")
     void addManyCategories(String categoryName) {
 
@@ -248,6 +240,7 @@ public class ApiTesting {
     }
 
     @Test
+    @DisplayName("Checks that the array is not empty")
     void checkListMassive() {
         Response response = given()
                 .when()
@@ -263,6 +256,7 @@ public class ApiTesting {
     }
 
     @Test
+    @DisplayName("FindByNotExistingCategoryId")
     void findByNotExistingCategoryId() {
 
         given().pathParams("id", 666).
@@ -273,6 +267,7 @@ public class ApiTesting {
     }
 
     @Test
+    @DisplayName("RequestWithIncorrectHttpMethod")
     void requestWithIncorrectHttpMethod() {
 
         given().
