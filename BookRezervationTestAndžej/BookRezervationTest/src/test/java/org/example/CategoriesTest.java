@@ -1,16 +1,20 @@
 package org.example;
 
-import org.junit.jupiter.api.Test;
+import org.checkerframework.checker.units.qual.Time;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CategoriesTest extends BaseTestPage {
 
     String categoryName = "Cats";
 
     @Test
+    @Order(1)
+
     void addCategories() {
         MainPage mainPage = new MainPage(driver);
         CategoriesPage categoriesPage = new CategoriesPage(driver);
@@ -25,6 +29,8 @@ public class CategoriesTest extends BaseTestPage {
     }
 
     @Test
+    @Order(2)
+
     void findCreatedCategory() {
         MainPage mainPage = new MainPage(driver);
         CategoriesPage categoriesPage = new CategoriesPage(driver);
@@ -38,6 +44,7 @@ public class CategoriesTest extends BaseTestPage {
     }
 
     @Test
+    @Order(3)
     void addInvalidCategory() {
         MainPage mainPage = new MainPage(driver);
         CategoriesPage categoriesPage = new CategoriesPage(driver);
@@ -50,6 +57,7 @@ public class CategoriesTest extends BaseTestPage {
     }
 
     @Test
+    @Order(4)
     void editCategory() {
         MainPage mainPage = new MainPage(driver);
         CategoriesPage categoriesPage = new CategoriesPage(driver);

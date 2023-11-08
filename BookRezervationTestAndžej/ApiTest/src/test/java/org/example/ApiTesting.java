@@ -228,7 +228,7 @@ public class ApiTesting {
 
     @ParameterizedTest
     @CsvFileSource(files = "src/main/resources/Categories.csv")
-    void parameterizedTest(String categoryName) {
+    void addManyCategories(String categoryName) {
 
         Map<String, String> book = new HashMap<>();
         book.put("name", categoryName);
