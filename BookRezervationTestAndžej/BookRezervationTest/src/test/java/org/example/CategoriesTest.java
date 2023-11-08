@@ -4,10 +4,10 @@ import org.checkerframework.checker.units.qual.Time;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.Select;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CategoriesTest extends BaseTestPage {
@@ -16,7 +16,6 @@ public class CategoriesTest extends BaseTestPage {
 
     @Test
     @Order(1)
-
     void addCategories() {
         MainPage mainPage = new MainPage(driver);
         CategoriesPage categoriesPage = new CategoriesPage(driver);
@@ -32,7 +31,6 @@ public class CategoriesTest extends BaseTestPage {
 
     @Test
     @Order(2)
-
     void findCreatedCategory() {
         MainPage mainPage = new MainPage(driver);
         CategoriesPage categoriesPage = new CategoriesPage(driver);
@@ -72,9 +70,10 @@ public class CategoriesTest extends BaseTestPage {
         assertTrue(driver.findElement(By.cssSelector("[name='category mt-3']")).getText().contains("Cats Games"));
 
     }
+
     @Test
     @Order(5)
-    void cancelUpdate(){
+    void cancelUpdate() {
         MainPage mainPage = new MainPage(driver);
         CategoriesPage categoriesPage = new CategoriesPage(driver);
         mainPage.clickCategories();
@@ -87,4 +86,28 @@ public class CategoriesTest extends BaseTestPage {
         assertTrue(driver.findElement(By.xpath("/html//div[@id='root']//label[.='Current categories:']")).isDisplayed());
 
     }
+
+    @Test
+    @Order(6)
+    void closeAlertWindow() {
+        MainPage mainPage = new MainPage(driver);
+        CategoriesPage categoriesPage = new CategoriesPage(driver);
+        mainPage.clickCategories();
+        categoriesPage.clickAddNewCategoryButton();
+        categoriesPage.clickToEnterNewCategory();
+        categoriesPage.inputNewCategory("geography");
+        categoriesPage.clickAddCategory();
+        categoriesPage.closeAlertWindow();
+
+        try {
+            driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div"));
+
+            assertFalse(true, "Element is present, but it should not be.");
+        } catch (NoSuchElementException e) {
+
+            assertFalse(false, "Element is not present, as expected.");
+        }
+    }
+
 }
+

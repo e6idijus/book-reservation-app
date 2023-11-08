@@ -16,6 +16,7 @@ public class CategoriesPage {
     By selectEditField = By.cssSelector("form > input[name='category']");
     By clickUpdateButton = By.cssSelector("[class='container  col-12 col-sm-8 col-lg-4 mt-3 mb-3'] [type='submit']");
     By clickCancelToUpdate = By.cssSelector("form > .btn.btn-warning");
+    By closeAlertWindow = By.cssSelector("[data-bs-dismiss]");
 
 
     public CategoriesPage(WebDriver driver) {
@@ -56,6 +57,9 @@ public class CategoriesPage {
     }
     public void clickCancelToUpdate(){
         driver.findElement(clickCancelToUpdate).click();
+    }
+    public void closeAlertWindow(){
+        driver.findElement(closeAlertWindow).click();
     }
 
 }
