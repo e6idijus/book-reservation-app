@@ -123,6 +123,7 @@ public class CategoriesTest extends BaseTestPage {
         categoriesPage.selectValueOfCategories();
         categoriesPage.deleteCategory();
         categoriesPage.clickConfirmToDelete();
+        assertEquals("Category deleted!", driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div")).getText());
         waiting();
 
         try {
