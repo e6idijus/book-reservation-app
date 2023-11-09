@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Add from "./Add";
+import Edit from "./Edit";
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [addClicked, setAddClicked] = useState(false);
@@ -66,10 +67,7 @@ export default function Categories() {
               );
             })}
           </select>
-          <button
-            className="btn btn-success  mb-3"
-            onClick={handleAddClick}
-          >
+          <button className="btn btn-success  mb-3" onClick={handleAddClick}>
             Add new category
           </button>
           {editBtnActive && (
