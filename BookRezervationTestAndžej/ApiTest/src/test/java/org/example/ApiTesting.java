@@ -98,8 +98,8 @@ public class ApiTesting {
     @Test
     @DisplayName("Checks whether the category name can be found by id")
     void findByCategoryId() {
-        int expectedId = 1;
-        given().pathParams("id", id).
+        int expectedId = 3;
+        given().pathParams("id", expectedId).
                 when().
                 get(url + "/{id}").
                 then().
@@ -111,7 +111,7 @@ public class ApiTesting {
 
     @Test
     @DisplayName("Checks whether the system allows deleting the category name according to id")
-    void deleteByCategoryId() {
+    void deleteCategoryById() {
         int idToDelete = 1;
         given().pathParams("id", idToDelete).
                 when().
@@ -275,7 +275,7 @@ public class ApiTesting {
     void updateCategoryName() {
 
         String updatedName = "Rock";
-        int id = 1;
+        int id = 2;
 
         Map<String, String> updatedBook = new HashMap<>();
         updatedBook.put("name", updatedName);
