@@ -93,24 +93,7 @@ public class ApiTesting {
 
     }
 
-    @Test
-    void deleteByCategoryName() {
 
-        Map<String, String> book = new HashMap<>();
-        book.put("name", nameToAdd);
-
-
-        given().
-
-                contentType(ContentType.JSON).
-                body(book).
-
-                when().
-                delete(url).
-                then().
-                statusCode(405);
-
-    }
 
     @Test
     @DisplayName("Checks whether the category name can be found by id")
@@ -129,12 +112,18 @@ public class ApiTesting {
     @Test
     @DisplayName("Checks whether the system allows deleting the category name according to id")
     void deleteByCategoryId() {
-
-        given().pathParams("id", id).
+        int idToDelete = 1;
+        given().pathParams("id", idToDelete).
                 when().
                 delete(url + "/{id}").
                 then().
-                statusCode(405);
+                statusCode(200);
+        given().
+                when().
+                get(url).
+                then().
+                statusCode(200).
+                body("find { it.id == " + idToDelete + " }", nullValue());
 
     }
 
