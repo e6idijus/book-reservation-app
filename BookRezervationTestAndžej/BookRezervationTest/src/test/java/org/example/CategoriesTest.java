@@ -108,6 +108,35 @@ public class CategoriesTest extends BaseTestPage {
             assertFalse(false, "Element is not present, as expected.");
         }
     }
+    @Test
+    @Order(7)
+    void deleteCategoryById(){
+        MainPage mainPage = new MainPage(driver);
+        CategoriesPage categoriesPage = new CategoriesPage(driver);
+        mainPage.clickCategories();
+        categoriesPage.clickAddNewCategoryButton();
+        categoriesPage.clickToEnterNewCategory();
+        categoriesPage.inputNewCategory(categoriesPage.valueOfCategory);
+        categoriesPage.clickAddCategory();
+        categoriesPage.clickSelectCategory();
+        categoriesPage.selectCategoryToDelete();
+        categoriesPage.deleteCategory();
+        categoriesPage.clickConfirmToDelete();
+
+        try {
+            driver.findElement(By.cssSelector("[value='" + categoriesPage.valueOfCategory + "']"));
+
+            assertFalse(true, "Element is present, but it should not be.");
+        } catch (NoSuchElementException e) {
+
+            assertFalse(false, "Element is not present, as expected.");
+        }
+
+
+
+
+    }
+
 
 }
 
