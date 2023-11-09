@@ -11,8 +11,8 @@ public class CategoriesPage {
     By inputNewCategory = By.cssSelector("[type='text']");
     By clickAddCategory = By.cssSelector(".container [type='submit']");
     By clickSelectCategory = By.cssSelector("[name='category mt-3']");
-    By selectValueOfCategories = By.cssSelector("[value='Cats']");
-    By selectCategoryToDelete = By.cssSelector("[value='" + valueOfCategory + "']");
+    By selectValueOfCategories = By.cssSelector("[value='" + valueOfCategory + "']");
+
     By clickEditButton = By.cssSelector(".btn-info");
     By selectEditField = By.cssSelector("form > input[name='category']");
     By clickUpdateButton = By.cssSelector("[class='container  col-12 col-sm-8 col-lg-4 mt-3 mb-3'] [type='submit']");
@@ -20,6 +20,7 @@ public class CategoriesPage {
     By closeAlertWindow = By.cssSelector("[data-bs-dismiss]");
     By deleteCategory = By.xpath("/html//div[@id='root']/main/div/button[@type='button']");
     By clickConfirmToDelete = By.cssSelector(".btn.btn-danger.btn-primary");
+    By clickUndoDelete = By.cssSelector(".modal-footer [data-bs-dismiss='modal']:nth-of-type(2)");
 
     public CategoriesPage(WebDriver driver) {
         this.driver = driver;
@@ -58,7 +59,7 @@ public class CategoriesPage {
     }
 
     public void clearEditField() {
-        driver.findElement(selectEditField).sendKeys(Keys.BACK_SPACE);
+        driver.findElement(selectEditField).sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
     }
 
     public void inputUpdatedCategory(String updatedCategory) {
@@ -77,15 +78,16 @@ public class CategoriesPage {
         driver.findElement(closeAlertWindow).click();
     }
 
-    public void selectCategoryToDelete() {
-        driver.findElement(selectCategoryToDelete).click();
-    }
+
 
     public void deleteCategory() {
         driver.findElement(deleteCategory).click();
     }
     public void clickConfirmToDelete(){
         driver.findElement(clickConfirmToDelete).click();
+    }
+    public void clickUndoDelete(){
+        driver.findElement(clickUndoDelete).click();
     }
 
 }

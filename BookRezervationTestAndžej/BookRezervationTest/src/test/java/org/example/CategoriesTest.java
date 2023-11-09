@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CategoriesTest extends BaseTestPage {
 
-    String categoryName = "Cats";
 
     @Test
     @Order(1)
@@ -22,7 +21,7 @@ public class CategoriesTest extends BaseTestPage {
         mainPage.clickCategories();
         categoriesPage.clickAddNewCategoryButton();
         categoriesPage.clickToEnterNewCategory();
-        categoriesPage.inputNewCategory(categoryName);
+        categoriesPage.inputNewCategory(categoriesPage.valueOfCategory);
         categoriesPage.clickAddCategory();
         assertEquals("Category created!", driver.findElement(By.xpath("//div[@id='liveAlertPlaceholder']/div/div[.='Category created!']")).getText());
 
@@ -36,7 +35,7 @@ public class CategoriesTest extends BaseTestPage {
         CategoriesPage categoriesPage = new CategoriesPage(driver);
         mainPage.clickCategories();
         categoriesPage.clickSelectCategory();
-        assertTrue(driver.findElement(By.cssSelector("[name='category mt-3']")).getText().contains(categoryName));
+        assertTrue(driver.findElement(By.cssSelector("[name='category mt-3']")).getText().contains(categoriesPage.valueOfCategory));
     }
 
     @Test
@@ -55,6 +54,7 @@ public class CategoriesTest extends BaseTestPage {
     @Test
     @Order(4)
     void editCategory() {
+        String category = "Games";
         MainPage mainPage = new MainPage(driver);
         CategoriesPage categoriesPage = new CategoriesPage(driver);
         mainPage.clickCategories();
@@ -63,11 +63,11 @@ public class CategoriesTest extends BaseTestPage {
         categoriesPage.clickEditButton();
         categoriesPage.selectEditField();
         categoriesPage.clearEditField();
-        categoriesPage.inputUpdatedCategory("s Games");
+        categoriesPage.inputUpdatedCategory(category);
         categoriesPage.clickUpdateButton();
         assertEquals("Category updated!", driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div")).getText());
         categoriesPage.clickSelectCategory();
-        assertTrue(driver.findElement(By.cssSelector("[name='category mt-3']")).getText().contains("Cats Games"));
+        assertTrue(driver.findElement(By.cssSelector("[name='category mt-3']")).getText().contains(category));
 
     }
 
@@ -108,9 +108,10 @@ public class CategoriesTest extends BaseTestPage {
             assertFalse(false, "Element is not present, as expected.");
         }
     }
+
     @Test
     @Order(7)
-    void deleteCategoryById(){
+    void deleteCategoryById() {
         MainPage mainPage = new MainPage(driver);
         CategoriesPage categoriesPage = new CategoriesPage(driver);
         mainPage.clickCategories();
@@ -119,9 +120,10 @@ public class CategoriesTest extends BaseTestPage {
         categoriesPage.inputNewCategory(categoriesPage.valueOfCategory);
         categoriesPage.clickAddCategory();
         categoriesPage.clickSelectCategory();
-        categoriesPage.selectCategoryToDelete();
+        categoriesPage.selectValueOfCategories();
         categoriesPage.deleteCategory();
         categoriesPage.clickConfirmToDelete();
+        waiting();
 
         try {
             driver.findElement(By.cssSelector("[value='" + categoriesPage.valueOfCategory + "']"));
@@ -133,10 +135,32 @@ public class CategoriesTest extends BaseTestPage {
         }
 
 
-
-
     }
 
+    @Test
+    @Order(8)
+    void undoDeleteCategoryById() {
+        MainPage mainPage = new MainPage(driver);
+        CategoriesPage categoriesPage = new CategoriesPage(driver);
+        mainPage.clickCategories();
+        categoriesPage.clickAddNewCategoryButton();
+        categoriesPage.clickToEnterNewCategory();
+        categoriesPage.inputNewCategory(categoriesPage.valueOfCategory);
+        categoriesPage.clickAddCategory();
+        categoriesPage.clickSelectCategory();
+        categoriesPage.selectValueOfCategories();
+        categoriesPage.deleteCategory();
+        categoriesPage.clickUndoDelete();
+
+
+        try {
+            driver.findElement(By.cssSelector("[value='" + categoriesPage.valueOfCategory + "']"));
+
+            assertFalse(false, "Element is present, as expected.");
+        } catch (NoSuchElementException e) {
+
+            assertFalse(true, "Element is not present, but should be.");
+        }
+    }
 
 }
-

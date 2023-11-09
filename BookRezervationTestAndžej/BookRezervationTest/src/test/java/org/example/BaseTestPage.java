@@ -29,7 +29,7 @@ public class BaseTestPage {
 
     void waiting() {
         try {
-            Thread.sleep(5000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
