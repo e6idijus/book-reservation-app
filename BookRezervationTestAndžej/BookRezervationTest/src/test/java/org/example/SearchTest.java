@@ -1,4 +1,4 @@
 package org.example;
 
-public class SearchTest extends BaseTestPage{
+public class SearchTest extends BaseTestPageChromeDriver {
 }

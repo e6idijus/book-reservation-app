@@ -1,16 +1,14 @@
 package org.example;
 
-import org.checkerframework.checker.units.qual.Time;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.Select;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class CategoriesTest extends BaseTestPage {
+public class CategoriesTest extends BaseTestPageChromeDriver {
 
 
     @Test
@@ -124,7 +122,7 @@ public class CategoriesTest extends BaseTestPage {
         categoriesPage.deleteCategory();
         categoriesPage.clickConfirmToDelete();
         assertEquals("Category deleted!", driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div")).getText());
-        waiting();
+
 
         try {
             driver.findElement(By.cssSelector("[value='" + categoriesPage.valueOfCategory + "']"));

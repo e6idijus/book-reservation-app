@@ -5,17 +5,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.time.Duration;
 
-public class BaseTestPage {
+public class BaseTestPageFirefoxDriver {
     private final static String BASE_URL = ("http://localhost:3000/");
     public WebDriver driver;
 
     @BeforeEach
     public void init() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        WebDriverManager.firefoxdriver().setup();
+        driver = new FirefoxDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.get(BASE_URL);

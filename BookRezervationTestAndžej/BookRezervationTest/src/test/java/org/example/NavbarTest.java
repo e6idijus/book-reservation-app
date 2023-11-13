@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class NavbarTest extends BaseTestPage {
+public class NavbarTest extends BaseTestPageChromeDriver {
     @Test
     void logoButtonTest(){
         MainPage mainPage = new MainPage(driver);
