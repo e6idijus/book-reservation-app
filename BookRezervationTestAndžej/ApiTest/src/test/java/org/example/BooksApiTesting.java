@@ -176,7 +176,18 @@ public class BooksApiTesting {
                 .contentType(ContentType.TEXT);
         response.then().body(containsString("Title already exists"));
 
-
+    }
+    @Test
+    @DisplayName("Checks whether the book name can be found by id")
+    void findBookById() {
+        int expectedId = 1;
+        given().pathParams("id", expectedId).
+                when().
+                get("/books/{id}").
+                then().
+                statusCode(200).log().body().
+                assertThat().
+                body("id", Matchers.equalTo(expectedId));
 
     }
 
