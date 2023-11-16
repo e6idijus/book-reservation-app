@@ -20,17 +20,23 @@ import java.util.Optional;
 @RestController
 public class BookController {
     private final BookRepository bookRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public BookController(BookRepository bookRepository) {
+    public BookController(BookRepository bookRepository, CategoryRepository categoryRepository) {
         this.bookRepository = bookRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @GetMapping("/books")
-    public List<Book> getBooks() {
-        return bookRepository.findAll();
+    public ResponseEntity<?> getBooks() {
+        List<Book> books = bookRepository.findAll();
+
+        if (!books.isEmpty()) {
+            return ResponseEntity.ok(books);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No books found");
+        }
     }
 
     @GetMapping("/books/{id}")
@@ -64,7 +70,6 @@ public class BookController {
         }
 
         if (bookRepository.existsByIsbn(book.getIsbn())) {
-            System.out.println(book.getIsbn());
             return ResponseEntity.badRequest().body("ISBN already exists");
         }
 
@@ -75,9 +80,11 @@ public class BookController {
 
         }
 
-        book.setCategories(categories);
-        bookRepository.save(book);
+        if (categories.contains(null)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No such categories exist!");
+        }
 
+        book.setCategories(categories);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
