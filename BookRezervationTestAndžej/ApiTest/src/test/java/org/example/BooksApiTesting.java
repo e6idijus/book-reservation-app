@@ -19,6 +19,23 @@ import static org.hamcrest.Matchers.containsString;
 public class BooksApiTesting {
 
     @Test
+    @DisplayName("Looking for books when the list of books is empty")
+    void emptyList() {
+
+        RestAssured.baseURI = "http://localhost:8080";
+
+        Response response = given()
+                .when()
+                .get("/books");
+        response.then().statusCode(404)
+                .contentType(ContentType.TEXT);
+
+        response.then().body(containsString("No books found"));
+
+
+    }
+
+    @Test
     @DisplayName("Adds the book and checks whether it has been added correctly")
     void addBook() {
 
@@ -28,8 +45,6 @@ public class BooksApiTesting {
         int expectedPages = 250;
         String expectedLanguage = "English";
         String expectedISBN = "1-9028-9465-1";
-
-        RestAssured.baseURI = "http://localhost:8080";
 
 
         Map<String, Object> book = new HashMap<>();
@@ -115,9 +130,10 @@ public class BooksApiTesting {
                 body(containsString("Pages field must have a value greater than 0")).
                 body(containsString("The language field must not be empty"));
     }
+
     @Test
     @DisplayName("Add book with not existed category")
-    void addBookWithNotExistedCategory(){
+    void addBookWithNotExistedCategory() {
         Map<String, Object> book = new HashMap<>();
         book.put("title", "Rent A Little Life");
         book.put("author", "Hanya Yanagihara");
@@ -146,6 +162,7 @@ public class BooksApiTesting {
         response.then().body(containsString("No such categories exist!"));
 
     }
+
     @Test
     @DisplayName("Add Book with existed title")
     void addBookWithExistedTitle() {
@@ -177,6 +194,7 @@ public class BooksApiTesting {
         response.then().body(containsString("Title already exists"));
 
     }
+
     @Test
     @DisplayName("Checks whether the book name can be found by id")
     void findBookById() {
