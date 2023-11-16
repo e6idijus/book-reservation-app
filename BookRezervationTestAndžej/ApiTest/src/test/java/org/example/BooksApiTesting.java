@@ -172,9 +172,9 @@ public class BooksApiTesting {
                 .body(book)
                 .when()
                 .post("/books");
-        response.then().statusCode(404)
+        response.then().statusCode(400)
                 .contentType(ContentType.TEXT);
-        response.then().body(containsString(""));
+        response.then().body(containsString("Title already exists"));
 
 
 
