@@ -215,5 +215,16 @@ public class BooksApiTesting {
 
     }
 
+    @Test
+    @DisplayName("Find By Not Existing BookId")
+    void findByNotExistingBookId() {
+        int expectedId = 555;
+        given().pathParams("id", expectedId).
+                when().
+                get("/books/{id}").
+                then().
+                statusCode(404);
+    }
+
 }
 
