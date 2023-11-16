@@ -20,18 +20,18 @@ public class BooksApiTesting {
     void addBook() {
 
         int expectedId = 1;
-        String title = "Loky";
-        String author = "Pan Tadeusz";
+        String title = "Loki";
+        String author = "Mackenzi Lee";
         int expectedPages = 250;
         String expectedLanguage = "English";
-        String expectedISBN = "1-9028-9465-7";
+        String expectedISBN = "1-9028-9465-1";
 
         RestAssured.baseURI = "http://localhost:8080";
 
 
         Map<String, Object> book = new HashMap<>();
-        book.put("title", "Loky");
-        book.put("author", "Pan Tadeusz");
+        book.put("title", "Loki");
+        book.put("author", "Mackenzi Lee");
 
         List<Map<String, String>> categories = List.of(
                 Map.of("name", "Drama"),
@@ -39,12 +39,12 @@ public class BooksApiTesting {
         );
         book.put("categories", categories);
 
-        book.put("description", "Frank Herbert’s classic masterpiece—a triumph of the imagination and one of the bestselling science fiction novels of all time");
+        book.put("description", "This is the first of three young adult novels from New York Times best-selling author Mackenzi Lee that explores the untapped potential and duality of heroism of popular characters in the Marvel Universe.");
         book.put("pictureUrl", "https://m.media-amazon.com/images/I/91OoNH1+MHL._SL1500_.jpg");
         book.put("pages", 250);
-        book.put("publicationDate", "2005-08-15");
+        book.put("publicationDate", "2019-09-15");
         book.put("language", "English");
-        book.put("isbn", "1-9028-9465-7");
+        book.put("isbn", "1-9028-9465-1");
 
 
         given()
@@ -67,6 +67,38 @@ public class BooksApiTesting {
                 .body("pages", equalTo(expectedPages))
                 .body("language", equalTo(expectedLanguage))
                 .body("isbn", equalTo(expectedISBN));
+
+    }
+    @Test
+    @DisplayName("Add a book that does not meet the validation")
+    void addInvalidBook(){
+        Map<String, Object> book = new HashMap<>();
+        book.put("title", "Loki");
+        book.put("author", "Mackenzi Lee");
+
+        List<Map<String, String>> categories = List.of(
+                Map.of("name", "Drama"),
+                Map.of("name", "Memoir")
+        );
+        book.put("categories", categories);
+
+        book.put("description", "This is the first of three young adult novels from New York Times best-selling author Mackenzi Lee that explores the untapped potential and duality of heroism of popular characters in the Marvel Universe.");
+        book.put("pictureUrl", "https://m.media-amazon.com/images/I/91OoNH1+MHL._SL1500_.jpg");
+        book.put("pages", 250);
+        book.put("publicationDate", "2019-09-15");
+        book.put("language", "English");
+        book.put("isbn", "1-9028-9465-1");
+
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(book)
+                .when()
+                .post("/books")
+                .then()
+                .log().all()
+                .statusCode(201);
+
 
     }
 }
