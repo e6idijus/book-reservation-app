@@ -4,8 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,9 +15,11 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.containsString;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BooksApiTesting {
 
     @Test
+    @Order(1)
     @DisplayName("Looking for books when the list of books is empty")
     void emptyList() {
 
@@ -36,6 +37,7 @@ public class BooksApiTesting {
     }
 
     @Test
+    @Order(2)
     @DisplayName("Adds the book and checks whether it has been added correctly")
     void addBook() {
 
@@ -89,6 +91,7 @@ public class BooksApiTesting {
     }
 
     @Test
+    @Order(3)
     @DisplayName("Add a book that does not meet the validation")
     void addBookWithEmptyFields() {
         Map<String, Object> book = new HashMap<>();
@@ -132,6 +135,7 @@ public class BooksApiTesting {
     }
 
     @Test
+    @Order(3)
     @DisplayName("Add book with not existed category")
     void addBookWithNotExistedCategory() {
         Map<String, Object> book = new HashMap<>();
@@ -164,6 +168,7 @@ public class BooksApiTesting {
     }
 
     @Test
+    @Order(4)
     @DisplayName("Add Book with existed title")
     void addBookWithExistedTitle() {
         Map<String, Object> book = new HashMap<>();
@@ -196,6 +201,7 @@ public class BooksApiTesting {
     }
 
     @Test
+    @Order(5)
     @DisplayName("Checks whether the book name can be found by id")
     void findBookById() {
         int expectedId = 1;
