@@ -3,6 +3,7 @@ package org.example;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -143,6 +144,39 @@ public class BooksApiTesting {
         response.then().statusCode(404)
                 .contentType(ContentType.TEXT);
         response.then().body(containsString("No such categories exist!"));
+
+    }
+    @Test
+    @DisplayName("Add Book with existed title")
+    void addBookWithExistedTitle() {
+        Map<String, Object> book = new HashMap<>();
+        book.put("title", "Loki");
+        book.put("author", "Hanya Yanagihara");
+
+        List<Map<String, String>> categories = List.of(
+                Map.of("name", "Fiction"),
+                Map.of("name", "Literary")
+        );
+        book.put("categories", categories);
+
+        book.put("description", "A stunning novel from one of the most exciting new voices in literature, A Little Life follows four college classmates—broke, adrift, and buoyed only by their friendship and ambition—as they move to New York in search of fame and fortune. ");
+        book.put("pictureUrl", "https://www.booklender.com/jackets/7/0/7/9780804172707.jpg");
+        book.put("pages", 150);
+        book.put("publicationDate", "2016-09-15");
+        book.put("language", "English");
+        book.put("isbn", "1-9028-9465-3");
+
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(book)
+                .when()
+                .post("/books");
+        response.then().statusCode(404)
+                .contentType(ContentType.TEXT);
+        response.then().body(containsString(""));
+
+
 
     }
 
