@@ -13,8 +13,8 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasKey;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BooksApiTesting {
@@ -242,6 +242,30 @@ public class BooksApiTesting {
         response.then()
                 .body("title", hasItem(bookTitle));
     }
+    @Test
+    @DisplayName("Checks that the array is not empty")
+    void checkListMassive() {
+        Response response = given()
+                .when()
+                .get("/books")
+                .then()
+                .statusCode(200)
+                .extract()
+                .response();
 
+
+        response.then()
+                .body("$", everyItem(hasKey("title")))
+                .body("$", everyItem(hasKey("id")))
+                .body("$", everyItem(hasKey("author")))
+                .body("$", everyItem(hasKey("categories")))
+                .body("$", everyItem(hasKey("description")))
+                .body("$", everyItem(hasKey("pictureUrl")))
+                .body("$", everyItem(hasKey("pages")))
+                .body("$", everyItem(hasKey("isbn")))
+                .body("$", everyItem(hasKey("publicationDate")))
+                .body("$", everyItem(hasKey("language")));
+
+    }
 }
 
