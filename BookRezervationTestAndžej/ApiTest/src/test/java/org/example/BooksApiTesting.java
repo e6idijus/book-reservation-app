@@ -227,6 +227,7 @@ public class BooksApiTesting {
                 then().
                 statusCode(404);
     }
+
     @Test
     @Order(7)
     @DisplayName("Checks if the book title can be found in the list")
@@ -242,7 +243,9 @@ public class BooksApiTesting {
         response.then()
                 .body("title", hasItem(bookTitle));
     }
+
     @Test
+    @Order(8)
     @DisplayName("Checks that the array is not empty")
     void checkListMassive() {
         Response response = given()
@@ -267,7 +270,9 @@ public class BooksApiTesting {
                 .body("$", everyItem(hasKey("language")));
 
     }
+
     @Test
+    @Order(9)
     @DisplayName("Request With Incorrect Http Method")
     void requestWithIncorrectHttpMethod() {
 
@@ -276,6 +281,39 @@ public class BooksApiTesting {
                 put("/books").
                 then().
                 statusCode(405);
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("Add Book with wrong picture Url format")
+    void addBookWithWrongPictureUrlFormat() {
+        Map<String, Object> book = new HashMap<>();
+        book.put("title", "Hannibal");
+        book.put("author", "Thomas Harris");
+
+        List<Map<String, String>> categories = List.of(
+                Map.of("name", "Fiction"),
+                Map.of("name", "Literary")
+        );
+        book.put("categories", categories);
+
+        book.put("description", "Hannibal is a psychological horror novel by American author Thomas Harris, published in 1999.");
+        book.put("pictureUrl", "https://www.booklender.com/jackets/7/0/7/9780804172707.svg");
+        book.put("pages", 200);
+        book.put("publicationDate", "2001-09-15");
+        book.put("language", "English");
+        book.put("isbn", "1-9028-9465-7");
+
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(book)
+                .when()
+                .post("/books");
+        response.then().statusCode(400)
+                .contentType(ContentType.TEXT);
+        response.then().body(containsString("URl should start with either \"http://\" or \"https://\" and end with \".jpg\" or \".png"));
+
     }
 }
 
