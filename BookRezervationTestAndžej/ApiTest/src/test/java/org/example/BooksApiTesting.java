@@ -267,5 +267,15 @@ public class BooksApiTesting {
                 .body("$", everyItem(hasKey("language")));
 
     }
+    @Test
+    @DisplayName("Request With Incorrect Http Method")
+    void requestWithIncorrectHttpMethod() {
+
+        given().
+                when().
+                put("/books").
+                then().
+                statusCode(405);
+    }
 }
 
