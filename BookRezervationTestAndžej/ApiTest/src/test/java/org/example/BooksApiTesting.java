@@ -14,6 +14,7 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItem;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BooksApiTesting {
@@ -216,7 +217,8 @@ public class BooksApiTesting {
     }
 
     @Test
-    @DisplayName("Find By Not Existing BookId")
+    @Order(6)
+    @DisplayName("Find By Not Existing Book Id")
     void findByNotExistingBookId() {
         int expectedId = 555;
         given().pathParams("id", expectedId).
@@ -224,6 +226,21 @@ public class BooksApiTesting {
                 get("/books/{id}").
                 then().
                 statusCode(404);
+    }
+    @Test
+    @Order(7)
+    @DisplayName("Checks if the book title can be found in the list")
+    public void findBookTitleInTheList() {
+        String bookTitle = "Loki";
+
+        Response response = given()
+                .baseUri("http://localhost:8080")
+                .when()
+                .get("/books");
+        response.then()
+                .statusCode(200);
+        response.then()
+                .body("title", hasItem(bookTitle));
     }
 
 }
