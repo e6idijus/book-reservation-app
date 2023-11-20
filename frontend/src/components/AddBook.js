@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CategoriesAddBook from "./CategoriesAddBook";
+import AlertMessage from "./AlertMessage";
 
 export default function AddBook() {
   const [bookData, setBookData] = useState({
@@ -16,6 +17,11 @@ export default function AddBook() {
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [activePlusBtn, setActivePlusBtn] = useState("");
+
+  const [message, setMessage] = useState({
+    name: "",
+    type: "",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,7 +52,7 @@ export default function AddBook() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const dataToPost = {
       title: bookData.title,
@@ -63,12 +69,47 @@ export default function AddBook() {
       language: bookData.language,
     };
 
-    fetch("http://localhost:8080/books", {
-      method: "POST",
-      body: JSON.stringify(dataToPost),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    try {
+      const response = await fetch("http://localhost:8080/books", {
+        method: "POST",
+        body: JSON.stringify(dataToPost),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        // Successful response (2xx status code)
+        handleMessages("Book created!", "success");
+
+        setTimeout(handleAlertClose, 1200);
+      } else if (response.status === 400 || response.status === 404) {
+        const statusMessage = await response.text(); // Get the error message as plain text
+        handleMessages(statusMessage, "danger");
+      } else {
+        // Handle errors (non-2xx status codes)
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message}`);
+      }
+    } catch (error) {
+      // Handle network errors or exceptions
+      alert(`An error occurred: ${error.message}`);
+    }
+  };
+
+  const handleMessages = (messageText, messageType) => {
+    setMessage({
+      ...message,
+      name: messageText,
+      type: messageType,
+    });
+  };
+
+  const handleAlertClose = () => {
+    setMessage({
+      ...message,
+      name: "",
+      type: "",
     });
   };
 
@@ -175,6 +216,14 @@ export default function AddBook() {
           value={bookData.language}
           onChange={handleChange}
         />
+
+        {message.name !== "" && (
+          <AlertMessage
+            message={message.name}
+            type={message.type}
+            handleAlertClose={handleAlertClose}
+          />
+        )}
 
         <button
           className="btn btn-primary"
