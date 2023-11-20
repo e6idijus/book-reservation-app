@@ -9,6 +9,7 @@ public class MainPage{
     By clickLogo = By.cssSelector("img[alt='Book Reservation App Logo']");
     By clickCategories = By.linkText("Categories");
     By clickNavBar = By.cssSelector(".navbar-toggler-icon");
+    By clickBooks = By.linkText("Books");
 
 
 
@@ -23,6 +24,9 @@ public class MainPage{
     }
     public void clickNavBar(){
         driver.findElement(clickNavBar).click();
+    }
+    public void clickBooks(){
+        driver.findElement(clickBooks).click();
     }
 
 }

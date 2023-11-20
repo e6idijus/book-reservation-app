@@ -10,7 +10,7 @@ public class CategoriesPage {
     By clickAddNewCategoryButton = By.cssSelector(".btn-success");
     By inputNewCategory = By.cssSelector("[type='text']");
     By clickAddCategory = By.cssSelector(".container [type='submit']");
-    By clickSelectCategory = By.cssSelector("[name='category mt-3']");
+    By clickSelectCategory = By.cssSelector("select[name='category']");
     By selectValueOfCategories = By.cssSelector("[value='" + valueOfCategory + "']");
 
     By clickEditButton = By.cssSelector(".btn-info");

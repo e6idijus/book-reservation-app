@@ -33,7 +33,7 @@ public class CategoriesTest extends BaseTestPageChromeDriver {
         CategoriesPage categoriesPage = new CategoriesPage(driver);
         mainPage.clickCategories();
         categoriesPage.clickSelectCategory();
-        assertTrue(driver.findElement(By.cssSelector("[name='category mt-3']")).getText().contains(categoriesPage.valueOfCategory));
+        assertTrue(driver.findElement(By.cssSelector("select[name='category']")).getText().contains(categoriesPage.valueOfCategory));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class CategoriesTest extends BaseTestPageChromeDriver {
         categoriesPage.clickUpdateButton();
         assertEquals("Category updated!", driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div")).getText());
         categoriesPage.clickSelectCategory();
-        assertTrue(driver.findElement(By.cssSelector("[name='category mt-3']")).getText().contains(category));
+        assertTrue(driver.findElement(By.cssSelector("select[name='category']")).getText().contains(category));
 
     }
 
@@ -76,7 +76,7 @@ public class CategoriesTest extends BaseTestPageChromeDriver {
         CategoriesPage categoriesPage = new CategoriesPage(driver);
         mainPage.clickCategories();
         categoriesPage.clickSelectCategory();
-        Select select = new Select(driver.findElement(By.xpath("//div[@id='root']//select[@name='category mt-3']")));
+        Select select = new Select(driver.findElement(By.cssSelector("select[name='category']")));
         select.selectByIndex(1);
         categoriesPage.clickSelectCategory();
         categoriesPage.clickEditButton();
