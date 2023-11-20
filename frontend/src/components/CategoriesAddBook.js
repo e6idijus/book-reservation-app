@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 
-export default function CategoriesAddBook({ handleChange }) {
+export default function CategoriesAddBook({
+  handleChange,
+  selectedCategories,
+  index,
+  setActivePlusBtn,
+}) {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -11,16 +16,40 @@ export default function CategoriesAddBook({ handleChange }) {
       const data = await response.json();
 
       if (active) {
-        setCategories(data);
+        const filteredCategories = data.filter((category) => {
+          const isCategorieNameInSelectedArray = selectedCategories.includes(
+            category.name
+          );
+          const isLocalSelecetionSelected =
+            category.name === selectedCategories[index];
+
+          return !isCategorieNameInSelectedArray || isLocalSelecetionSelected;
+        });
+
+        setCategories(filteredCategories);
       }
     };
 
     fetchData();
 
+    togglePlusBtn();
+
     return () => {
       active = false;
     };
-  }, []);
+  }, [selectedCategories]);
+
+  function togglePlusBtn() {
+    const isCategorychosen =
+      selectedCategories[index] === undefined ||
+      selectedCategories[index] === "";
+    const oneMoreCategoryList = index === 2 || categories.length <= 1;
+    if (isCategorychosen || oneMoreCategoryList) {
+      setActivePlusBtn("disabled");
+    } else {
+      setActivePlusBtn("");
+    }
+  }
 
   return (
     <select
