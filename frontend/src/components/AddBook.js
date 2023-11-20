@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CategoriesAddBook from "./CategoriesAddBook";
+import AlertMessage from "./AlertMessage";
 
 export default function AddBook() {
   const [bookData, setBookData] = useState({
@@ -17,13 +18,17 @@ export default function AddBook() {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [activePlusBtn, setActivePlusBtn] = useState("");
 
+  const [message, setMessage] = useState({
+    name: "",
+    type: "",
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setBookData({
       ...bookData,
       [name]: value,
     });
-    console.log(bookData);
   };
 
   const handleCategoryChange = (index, value) => {
@@ -36,15 +41,75 @@ export default function AddBook() {
     });
 
     setSelectedCategories([...newCategories]);
+
+    console.log(bookData);
   };
 
   const handlePLusBtn = () => {
-    if (bookData.categories.length >= 2) {
-      setActivePlusBtn("disabled");
-    }
     setBookData({
       ...bookData,
       categories: [...bookData.categories, ""],
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const dataToPost = {
+      title: bookData.title,
+      author: bookData.author,
+      categories: bookData.categories.map((category) => ({
+        name: category,
+      })),
+
+      description: bookData.description,
+      pictureUrl: bookData.pictureUrl,
+      pages: bookData.pages,
+      isbn: bookData.isbn,
+      publicationDate: bookData.publicationDate,
+      language: bookData.language,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/books", {
+        method: "POST",
+        body: JSON.stringify(dataToPost),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        // Successful response (2xx status code)
+        handleMessages("Book created!", "success");
+
+        setTimeout(handleAlertClose, 1200);
+      } else if (response.status === 400 || response.status === 404) {
+        const statusMessage = await response.text(); // Get the error message as plain text
+        handleMessages(statusMessage, "danger");
+      } else {
+        // Handle errors (non-2xx status codes)
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message}`);
+      }
+    } catch (error) {
+      // Handle network errors or exceptions
+      alert(`An error occurred: ${error.message}`);
+    }
+  };
+
+  const handleMessages = (messageText, messageType) => {
+    setMessage({
+      ...message,
+      name: messageText,
+      type: messageType,
+    });
+  };
+
+  const handleAlertClose = () => {
+    setMessage({
+      ...message,
+      name: "",
+      type: "",
     });
   };
 
@@ -52,7 +117,7 @@ export default function AddBook() {
     <div className="container  col-12 col-sm-8 col-lg-4 mt-3 mb-3">
       <h4>Add a new book:</h4>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <label className="form-label">Title</label>
         <input
           className="form-control"
@@ -80,6 +145,7 @@ export default function AddBook() {
             handleChange={(e) => handleCategoryChange(index, e.target.value)}
             selectedCategories={selectedCategories}
             index={index}
+            setActivePlusBtn={setActivePlusBtn}
           />
         ))}
 
@@ -150,6 +216,14 @@ export default function AddBook() {
           value={bookData.language}
           onChange={handleChange}
         />
+
+        {message.name !== "" && (
+          <AlertMessage
+            message={message.name}
+            type={message.type}
+            handleAlertClose={handleAlertClose}
+          />
+        )}
 
         <button
           className="btn btn-primary"
