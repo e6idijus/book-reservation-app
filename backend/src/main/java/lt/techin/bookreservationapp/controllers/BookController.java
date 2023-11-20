@@ -12,25 +12,29 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin("http://localhost:3000")
 @RestController
 public class BookController {
     private final BookRepository bookRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public BookController(BookRepository bookRepository) {
+    public BookController(BookRepository bookRepository, CategoryRepository categoryRepository) {
         this.bookRepository = bookRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @GetMapping("/books")
-    public List<Book> getBooks() {
-        return bookRepository.findAll();
+    public ResponseEntity<?> getBooks() {
+        List<Book> books = bookRepository.findAll();
+
+        if (!books.isEmpty()) {
+            return ResponseEntity.ok(books);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No books found");
+        }
     }
 
     @GetMapping("/books/{id}")
@@ -63,21 +67,34 @@ public class BookController {
             return ResponseEntity.badRequest().body(errorMessage);
         }
 
+        if (bookRepository.existsByTitle(book.getTitle())) {
+            return ResponseEntity.badRequest().body("Title already exists");
+        }
+
         if (bookRepository.existsByIsbn(book.getIsbn())) {
-            System.out.println(book.getIsbn());
             return ResponseEntity.badRequest().body("ISBN already exists");
         }
 
         List<Category> categories = new ArrayList<>();
+        Set<String> uniqueCategoryNames = new HashSet<>();
+
         for (Category category : book.getCategories()) {
+
+            if (!uniqueCategoryNames.add(category.getName())) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categories cannot be duplicated!");
+            }
+
             Category existingCategory = categoryRepository.findByName(category.getName());
             categories.add(existingCategory);
 
         }
 
+        if (categories.contains(null)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No such categories exist!");
+        }
+
         book.setCategories(categories);
         bookRepository.save(book);
-
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

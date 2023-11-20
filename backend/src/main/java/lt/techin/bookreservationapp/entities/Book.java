@@ -18,8 +18,9 @@ public class Book {
     private int id;
     @NotNull(message = "The title field must not be null")
     @NotEmpty(message = "The title field must not be empty")
-    @Pattern(regexp = "^[A-Z][a-zA-Z0-9 .,:'\"!?&()-]+$", message = "Book title must start with an uppercase " +
+    @Pattern(regexp = "^[A-Z0-9][a-zA-Z0-9 .,:'\"!?&()-]+$", message = "Book title must start with an uppercase " +
             "letter, that can be followed by a mix of alphanumeric characters, spaces, and certain punctuation marks")
+    @Column(unique = true)
     private String title;
 
     @NotNull(message = "The author field must not be null")
@@ -33,6 +34,8 @@ public class Book {
             joinColumns = @JoinColumn(name = "Book_id"),
             inverseJoinColumns = @JoinColumn(name = "Category_id")
     )
+    @NotEmpty(message = "The categories field must not be empty")
+    @NotNull(message = "The categories field must not be null")
     private List<Category> categories;
 
     @NotNull(message = "The description field must not be null")
