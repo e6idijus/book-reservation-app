@@ -5,7 +5,10 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -144,8 +147,8 @@ public class BooksApiTesting {
         book.put("author", "Hanya Yanagihara");
 
         List<Map<String, String>> categories = List.of(
-                Map.of("name", "Fiction"),
-                Map.of("name", "Literary")
+                Map.of("name", "Crime"),
+                Map.of("name", "Horror")
         );
         book.put("categories", categories);
 
@@ -313,6 +316,43 @@ public class BooksApiTesting {
         response.then().statusCode(400)
                 .contentType(ContentType.TEXT);
         response.then().body(containsString("URl should start with either \"http://\" or \"https://\" and end with \".jpg\" or \".png"));
+
+    }
+
+    @ParameterizedTest
+    @Order(11)
+    @DisplayName("Adds book with one empty field")
+    @CsvFileSource(files = "src/main/resources/Books.csv")
+    void addBookWithOneEmptyField(String title, String author,String description, String pictureUrl, Integer pages, String date, String language, String isbn,String message) {
+
+        Map<String, Object> book = new HashMap<>();
+        book.put("title", title);
+        book.put("author",author);
+
+        List<Map<String, String>> categories = List.of(
+                Map.of("name", "Fiction"),
+                Map.of("name", "Literary")
+        );
+        book.put("categories", categories);
+
+        book.put("description",description);
+        book.put("pictureUrl",pictureUrl);
+        book.put("pages", pages);
+        book.put("publicationDate", date);
+        book.put("language", language);
+        book.put("isbn", isbn);
+
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(book)
+                .when()
+                .post("/books");
+        response.then().statusCode(400)
+                .contentType(ContentType.TEXT);
+
+        response.then().body(containsString(message));
+
 
     }
 }

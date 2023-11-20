@@ -47,8 +47,8 @@ public class Book {
 
     @NotNull(message = "The picture url field must not be null")
     @NotEmpty(message = "The picture url field must not be empty")
-        @Pattern(regexp = "^(https?)://[^\\s$]+\\.(jpg|png)$", message = "URl should start with either " +
-                "\"http://\" or \"https://\" and end with \".jpg\" or \".png")
+    @Pattern(regexp = "^(https?)://[^\\s$]+\\.(jpg|png)$", message = "URl should start with either " +
+            "\"http://\" or \"https://\" and end with \".jpg\" or \".png")
     private String pictureUrl;
 
     @Min(value = 1, message = "Pages field must have a value greater than 0")
