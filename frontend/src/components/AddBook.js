@@ -17,6 +17,7 @@ export default function AddBook() {
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [activePlusBtn, setActivePlusBtn] = useState("");
+  const [activeMinusBtn, setActiveMinusBtn] = useState("");
 
   const [message, setMessage] = useState({
     name: "",
@@ -50,6 +51,16 @@ export default function AddBook() {
       ...bookData,
       categories: [...bookData.categories, ""],
     });
+  };
+
+  const handleMinusBtn = () => {
+    const newCategories = [...bookData.categories];
+    newCategories.pop();
+    setBookData({
+      ...bookData,
+      categories: newCategories,
+    });
+    setSelectedCategories([...newCategories]);
   };
 
   const handleSubmit = async (e) => {
@@ -146,6 +157,7 @@ export default function AddBook() {
             selectedCategories={selectedCategories}
             index={index}
             setActivePlusBtn={setActivePlusBtn}
+            setActiveMinusBtn={setActiveMinusBtn}
           />
         ))}
 
@@ -156,6 +168,16 @@ export default function AddBook() {
         >
           +
         </button>
+
+        <button
+          className={`btn btn-danger rounded-circle ${activeMinusBtn}`}
+          style={{ padding: "6px 15px" }}
+          type="button"
+          onClick={handleMinusBtn}
+        >
+          -
+        </button>
+
         <div>
           <label className="form-label">Description</label>
           <textarea
