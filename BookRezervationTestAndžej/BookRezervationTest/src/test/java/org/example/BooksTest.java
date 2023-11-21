@@ -4,9 +4,12 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.openqa.selenium.By;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BooksTest extends BaseTestPageChromeDriver {
@@ -49,5 +52,30 @@ public class BooksTest extends BaseTestPageChromeDriver {
         booksPage.enterLanguage("English");
         booksPage.clickSubmit();
         assertEquals("Title already exists", driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div")).getText());
+    }
+
+
+    @ParameterizedTest
+    @Order(3)
+    @CsvFileSource(files = "src/main/resources/Books.csv")
+    void addBookWithOneEmptyField(String title, String author,String description, String pictureUrl, Integer pages, String years,String month, String day, String language, String isbn,String message) {
+        MainPage mainPage = new MainPage(driver);
+        BooksPage booksPage = new BooksPage(driver);
+        mainPage.clickBooks();
+        booksPage.enterTitle(title);
+        booksPage.enterAuthor(author);
+        booksPage.clickToSelectCategory();
+        booksPage.selectCategory();
+        booksPage.enterDescription(description);
+        booksPage.enterPictureUrl(pictureUrl);
+        booksPage.enterPages(String.valueOf(pages));
+        booksPage.enterIsbn(isbn);
+        booksPage.selectDate(years, month, day);
+        booksPage.enterLanguage(language);
+        booksPage.clickSubmit();
+
+        assertTrue(driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div"))
+                .getText()
+                .contains(message));
     }
 }
