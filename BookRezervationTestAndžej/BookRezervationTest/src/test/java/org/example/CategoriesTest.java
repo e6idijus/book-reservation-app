@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.Select;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestClassOrder(ClassOrderer.OrderAnnotation.class)
+@Order(1)
 public class CategoriesTest extends BaseTestPageChromeDriver {
 
 
