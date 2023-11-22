@@ -8,17 +8,17 @@ public class BooksPage {
     WebDriver driver;
     String valueOfCategory = "Films";
 
-    By enterTitle = By.cssSelector("form > input[name='title']");
-    By enterAuthor = By.cssSelector("form > input[name='author']");
-    By clickToSelectCategory = By.cssSelector("form > select[name='category']");
+    By enterTitle = By.cssSelector("input#title");
+    By enterAuthor = By.cssSelector("input#author");
+    By clickToSelectCategory = By.cssSelector("select#category");
     By selectCategory = By.cssSelector("[value='" + valueOfCategory + "']");
     By enterDescription = By.cssSelector("textarea[name='description']");
-    By enterPictureUrl = By.cssSelector("form > input[name='pictureUrl']");
-    By enterPages = By.cssSelector("form > input[name='pages']");
-    By enterIsbn = By.cssSelector("form > input[name='isbn']");
-    By selectDate = By.cssSelector("form > input[name='publicationDate']");
-    By enterLanguage = By.cssSelector("form > input[name='language']");
-    By clickSubmit = By.cssSelector("[class='container  col-12 col-sm-8 col-lg-4 mt-3 mb-3'] [type='submit']");
+    By enterPictureUrl = By.cssSelector("input#picture-url");
+    By enterPages = By.cssSelector("input#pages");
+    By enterIsbn = By.cssSelector("input#isbn");
+    By selectDate = By.cssSelector("input#publication-date");
+    By enterLanguage = By.cssSelector("input#language");
+    By clickSubmit = By.cssSelector("[class='container col-12 col-sm-8 col-lg-4 mt-3 mb-3'] [type='submit']");
 
     public BooksPage(WebDriver driver) {
         this.driver = driver;

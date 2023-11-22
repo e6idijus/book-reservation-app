@@ -151,6 +151,7 @@ public class CategoriesTest extends BaseTestPageChromeDriver {
         categoriesPage.selectValueOfCategories();
         categoriesPage.deleteCategory();
         categoriesPage.clickUndoDelete();
+        waiting();
 
 
         try {
