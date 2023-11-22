@@ -120,6 +120,7 @@ public class CategoriesTest extends BaseTestPageChromeDriver {
         categoriesPage.clickSelectCategory();
         categoriesPage.selectValueOfCategories();
         categoriesPage.deleteCategory();
+        waiting();
         categoriesPage.clickConfirmToDelete();
         assertEquals("Category deleted!", driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div")).getText());
 

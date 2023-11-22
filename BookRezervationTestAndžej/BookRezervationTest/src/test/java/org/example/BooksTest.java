@@ -79,27 +79,24 @@ public class BooksTest extends BaseTestPageChromeDriver {
                 .contains(message));
     }
 
-    @ParameterizedTest
+    @Test
     @Order(4)
-    @CsvFileSource(files = "src/main/resources/ValidationMessage.csv")
-    void checkFieldValidation(String message) {
-        System.out.println("Validation Message from CSV: " + message);
+    void checkFieldValidation() {
+
         MainPage mainPage = new MainPage(driver);
         BooksPage booksPage = new BooksPage(driver);
         mainPage.clickBooks();
         booksPage.clickSubmit();
-        waiting();
-//        assertTrue(driver.findElement(By.cssSelector("[class] form > #liveAlertPlaceholder:nth-child(3) [role] div")).getText().contains(message));
-        String actualText = driver.findElement(By.cssSelector("[class] form > #liveAlertPlaceholder:nth-child(3) [role] div")).getText();
-        System.out.println("Actual text: " + actualText);
-        assertTrue(actualText.contains(message));
-        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(2) > div[role='alert'] > div")).getText().contains(message));
-        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(3) > div[role='alert'] > div")).getText().contains(message));
-        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(4) > div#liveAlertPlaceholder > div[role='alert'] > div")).getText().contains(message));
-        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(5) > div[role='alert'] > div")).getText().contains(message));
-        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(6) > div[role='alert'] > div")).getText().contains(message));
-        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(8) > div[role='alert'] > div")).getText().contains(message));
-        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(9) > div[role='alert'] > div")).getText().contains(message));
-        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(7) > div[role='alert'] > div")).getText().contains(message));
+
+        assertEquals("Book title must start with an uppercase letter, that can be followed by a mix of alphanumeric characters, spaces, and certain punctuation marks!", driver.findElement(By.cssSelector("[class] form > #liveAlertPlaceholder:nth-child(3) [role] div")).getText());
+        assertEquals("Author's first and last name must start with an uppercase letter, that can be followed by one or more lowercase letters!", driver.findElement(By.cssSelector("div:nth-of-type(2) > div[role='alert'] > div")).getText());
+        assertEquals("Select one category at least!", driver.findElement(By.cssSelector("div:nth-of-type(3) > div[role='alert'] > div")).getText());
+        assertEquals("Description should start with a capital letter and is limited to a maximum of 300 characters!", driver.findElement(By.cssSelector("div:nth-of-type(4) > div#liveAlertPlaceholder > div[role='alert'] > div")).getText());
+        assertEquals("URl should start with either \"http://\" or \"https://\" and end with \".jpg\" or \".png!", driver.findElement(By.cssSelector("div:nth-of-type(5) > div[role='alert'] > div")).getText());
+        assertEquals("Pages field must have a value greater than 0!", driver.findElement(By.cssSelector("div:nth-of-type(6) > div[role='alert'] > div")).getText());
+        assertEquals("ISBN is incorrect", driver.findElement(By.cssSelector("div:nth-of-type(7) > div[role='alert'] > div")).getText());
+        assertEquals("Select a date, please!", driver.findElement(By.cssSelector("div:nth-of-type(8) > div[role='alert'] > div")).getText());
+        assertEquals("Language must start with an uppercase letter, that can be followed by one or more lowercase letters!", driver.findElement(By.cssSelector("div:nth-of-type(9) > div[role='alert'] > div")).getText());
+
     }
 }
