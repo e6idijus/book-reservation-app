@@ -88,15 +88,15 @@ public class BooksTest extends BaseTestPageChromeDriver {
         mainPage.clickBooks();
         booksPage.clickSubmit();
 
-        assertEquals("Book title must start with an uppercase letter, that can be followed by a mix of alphanumeric characters, spaces, and certain punctuation marks!", driver.findElement(By.cssSelector("[class] form > #liveAlertPlaceholder:nth-child(3) [role] div")).getText());
-        assertEquals("Author's first and last name must start with an uppercase letter, that can be followed by one or more lowercase letters!", driver.findElement(By.cssSelector("div:nth-of-type(2) > div[role='alert'] > div")).getText());
-        assertEquals("Select one category at least!", driver.findElement(By.cssSelector("div:nth-of-type(3) > div[role='alert'] > div")).getText());
-        assertEquals("Description should start with a capital letter and is limited to a maximum of 300 characters!", driver.findElement(By.cssSelector("div:nth-of-type(4) > div#liveAlertPlaceholder > div[role='alert'] > div")).getText());
-        assertEquals("URl should start with either \"http://\" or \"https://\" and end with \".jpg\" or \".png!", driver.findElement(By.cssSelector("div:nth-of-type(5) > div[role='alert'] > div")).getText());
-        assertEquals("Pages field must have a value greater than 0!", driver.findElement(By.cssSelector("div:nth-of-type(6) > div[role='alert'] > div")).getText());
-        assertEquals("ISBN is incorrect", driver.findElement(By.cssSelector("div:nth-of-type(7) > div[role='alert'] > div")).getText());
-        assertEquals("Select a date, please!", driver.findElement(By.cssSelector("div:nth-of-type(8) > div[role='alert'] > div")).getText());
-        assertEquals("Language must start with an uppercase letter, that can be followed by one or more lowercase letters!", driver.findElement(By.cssSelector("div:nth-of-type(9) > div[role='alert'] > div")).getText());
+        assertEquals("Book title must start with an uppercase letter, that can be followed by a mix of alphanumeric characters, spaces, and certain punctuation marks!", driver.findElement(By.cssSelector("[class] [class='mb-3']:nth-of-type(1) [role] div")).getText());
+        assertEquals("Author's first and last name must start with an uppercase letter, that can be followed by one or more lowercase letters!", driver.findElement(By.cssSelector("[class] [class='mb-3']:nth-of-type(2) [role] div")).getText());
+        assertEquals("Select one category at least!", driver.findElement(By.cssSelector("[class='mt-2'] [role] div")).getText());
+        assertEquals("Description should start with a capital letter and is limited to a maximum of 300 characters!", driver.findElement(By.cssSelector("[class] [class='mb-3']:nth-of-type(4) [role] div")).getText());
+        assertEquals("URl should start with either \"http://\" or \"https://\" and end with \".jpg\" or \".png!", driver.findElement(By.cssSelector("[class] [class='mb-3']:nth-of-type(5) [role] div")).getText());
+        assertEquals("Pages field must have a value greater than 0!", driver.findElement(By.cssSelector("[class] [class='col-md-6 mb-2']:nth-of-type(1) [role] div")).getText());
+        assertEquals("ISBN is incorrect", driver.findElement(By.cssSelector("[class] [class='col-md-6 mb-2']:nth-of-type(2) [role] div")).getText());
+        assertEquals("Select a date, please!", driver.findElement(By.cssSelector("[class='col-md-6 mb-3'] [role] div")).getText());
+        assertEquals("Language must start with an uppercase letter, that can be followed by one or more lowercase letters!", driver.findElement(By.cssSelector("[class='col-md-6'] [role] div")).getText());
 
     }
 }
