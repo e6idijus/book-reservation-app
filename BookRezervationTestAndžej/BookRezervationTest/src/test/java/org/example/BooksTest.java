@@ -58,7 +58,7 @@ public class BooksTest extends BaseTestPageChromeDriver {
     @ParameterizedTest
     @Order(3)
     @CsvFileSource(files = "src/main/resources/Books.csv")
-    void addBookWithOneEmptyField(String title, String author,String description, String pictureUrl, Integer pages, String years,String month, String day, String language, String isbn,String message) {
+    void addBookWithOneEmptyField(String title, String author, String description, String pictureUrl, Integer pages, String years, String month, String day, String language, String isbn, String message) {
         MainPage mainPage = new MainPage(driver);
         BooksPage booksPage = new BooksPage(driver);
         mainPage.clickBooks();
@@ -77,5 +77,29 @@ public class BooksTest extends BaseTestPageChromeDriver {
         assertTrue(driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div"))
                 .getText()
                 .contains(message));
+    }
+
+    @ParameterizedTest
+    @Order(4)
+    @CsvFileSource(files = "src/main/resources/ValidationMessage.csv")
+    void checkFieldValidation(String message) {
+        System.out.println("Validation Message from CSV: " + message);
+        MainPage mainPage = new MainPage(driver);
+        BooksPage booksPage = new BooksPage(driver);
+        mainPage.clickBooks();
+        booksPage.clickSubmit();
+        waiting();
+//        assertTrue(driver.findElement(By.cssSelector("[class] form > #liveAlertPlaceholder:nth-child(3) [role] div")).getText().contains(message));
+        String actualText = driver.findElement(By.cssSelector("[class] form > #liveAlertPlaceholder:nth-child(3) [role] div")).getText();
+        System.out.println("Actual text: " + actualText);
+        assertTrue(actualText.contains(message));
+        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(2) > div[role='alert'] > div")).getText().contains(message));
+        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(3) > div[role='alert'] > div")).getText().contains(message));
+        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(4) > div#liveAlertPlaceholder > div[role='alert'] > div")).getText().contains(message));
+        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(5) > div[role='alert'] > div")).getText().contains(message));
+        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(6) > div[role='alert'] > div")).getText().contains(message));
+        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(8) > div[role='alert'] > div")).getText().contains(message));
+        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(9) > div[role='alert'] > div")).getText().contains(message));
+        assertTrue(driver.findElement(By.cssSelector("div:nth-of-type(7) > div[role='alert'] > div")).getText().contains(message));
     }
 }
