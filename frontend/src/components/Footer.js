@@ -1,24 +1,26 @@
+import "./Footer.css";
+
 export default function Footer() {
   return (
-    <footer className="mt-3 w-100 text-size 10px">
+    <footer className="mt-10 w-100 text-font-size  text-center text-lg-start fixed-bottom ">
       <div
         id="footer"
         className="container-fluid"
       >
         <div className="row ms-3 ">
-          <div className="div1 col-12 col-lg-3 d-flex justify-content-center ">
-            {<p class="fs-6">textContact us: tel. 00370 223322223</p>}
+          <div className="div1 col-12 col-lg-3 d-flex  justify-content-center">
+            {<p>Tel. 00370 223322223</p>}
           </div>
           <div className="div2 col-12 col-lg-3 d-flex justify-content-center">
             <a
-              href="#"
+              href="https://www.vtmc.lt/kontaktai/"
               className="link-primary"
             >
               info@bookreservation.com
             </a>
           </div>
           <div className="div3 col-12 col-lg-3 d-flex justify-content-center">
-            <p>&copy; Copyright 2023. All Rights Reserved.</p>
+            <p>&copy; Copyright 2023.</p>
           </div>
           <div className="footer div4 col-12 col-lg-3 d-flex justify-content-center">
             <ul>
