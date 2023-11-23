@@ -48,7 +48,7 @@ public class CategoriesTest extends BaseTestPageChromeDriver {
         categoriesPage.clickToEnterNewCategory();
         categoriesPage.inputNewCategory("geography");
         categoriesPage.clickAddCategory();
-        assertEquals("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters", driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div")).getText());
+        assertEquals("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 3 and 50 characters", driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div")).getText());
     }
 
     @Test

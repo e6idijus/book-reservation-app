@@ -14,7 +14,7 @@ public class NavBarTestMobile extends BaseTestPageMobile{
         MainPage mainPage = new MainPage(driver);
         mainPage.clickLogo();
         waiting();
-        assertEquals("Welcome to Home!",driver.findElement(By.xpath("//div[@id='root']//div[.='Welcome to Home!']")).getText());
+        assertEquals("Book Reservation App",driver.findElement(By.cssSelector(".display-3.fw-bold")).getText());
     }
     @Test
     void openNavBar(){

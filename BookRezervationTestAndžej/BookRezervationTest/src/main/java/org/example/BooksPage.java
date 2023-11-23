@@ -19,6 +19,7 @@ public class BooksPage {
     By selectDate = By.cssSelector("input#publication-date");
     By enterLanguage = By.cssSelector("input#language");
     By clickSubmit = By.cssSelector("[class='container col-12 col-sm-8 col-lg-4 mt-3 mb-3'] [type='submit']");
+    By clickAddBookButton = By.cssSelector("[class='btn btn-warning mb-2']");
 
     public BooksPage(WebDriver driver) {
         this.driver = driver;
@@ -72,6 +73,10 @@ public class BooksPage {
         var element = driver.findElement(clickSubmit);
         JavascriptExecutor executor = (JavascriptExecutor)driver;
         executor.executeScript("arguments[0].click();", element);
+    }
+    public void clickAddBookButton(){
+        driver.findElement(clickAddBookButton).click();
+
     }
 
 }

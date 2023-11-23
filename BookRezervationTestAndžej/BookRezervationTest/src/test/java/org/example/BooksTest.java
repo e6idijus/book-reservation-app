@@ -18,6 +18,7 @@ public class BooksTest extends BaseTestPageChromeDriver {
         MainPage mainPage = new MainPage(driver);
         BooksPage booksPage = new BooksPage(driver);
         mainPage.clickBooks();
+        booksPage.clickAddBookButton();
         booksPage.enterTitle("Harry Potter Film");
         booksPage.enterAuthor("David Yates");
         booksPage.clickToSelectCategory();
@@ -29,7 +30,7 @@ public class BooksTest extends BaseTestPageChromeDriver {
         booksPage.selectDate("2000", "10", "05");
         booksPage.enterLanguage("English");
         booksPage.clickSubmit();
-        assertEquals("Book created!", driver.findElement(By.cssSelector("div#liveAlertPlaceholder > div > div")).getText());
+        assertEquals("Harry Potter Film", driver.findElement(By.cssSelector("[class] [class='col-md-6']:nth-of-type(2) [class='mb-2']")).getText());
 
     }
 
@@ -39,6 +40,7 @@ public class BooksTest extends BaseTestPageChromeDriver {
         MainPage mainPage = new MainPage(driver);
         BooksPage booksPage = new BooksPage(driver);
         mainPage.clickBooks();
+        booksPage.clickAddBookButton();
         booksPage.enterTitle("Harry Potter Film");
         booksPage.enterAuthor("David Yates");
         booksPage.clickToSelectCategory();
@@ -61,6 +63,7 @@ public class BooksTest extends BaseTestPageChromeDriver {
         MainPage mainPage = new MainPage(driver);
         BooksPage booksPage = new BooksPage(driver);
         mainPage.clickBooks();
+        booksPage.clickAddBookButton();
         booksPage.enterTitle(title);
         booksPage.enterAuthor(author);
         booksPage.clickToSelectCategory();
@@ -85,6 +88,7 @@ public class BooksTest extends BaseTestPageChromeDriver {
         MainPage mainPage = new MainPage(driver);
         BooksPage booksPage = new BooksPage(driver);
         mainPage.clickBooks();
+        booksPage.clickAddBookButton();
         booksPage.clickSubmit();
 
         assertEquals("Book title must start with an uppercase letter, that can be followed by a mix of alphanumeric characters, spaces, and certain punctuation marks!", driver.findElement(By.cssSelector("[class] [class='mb-3']:nth-of-type(1) [role] div")).getText());

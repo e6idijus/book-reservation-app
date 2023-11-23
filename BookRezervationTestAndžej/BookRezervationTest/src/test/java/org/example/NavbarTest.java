@@ -12,7 +12,7 @@ public class NavbarTest extends BaseTestPageChromeDriver {
     void logoButtonTest(){
         MainPage mainPage = new MainPage(driver);
         mainPage.clickLogo();
-        assertEquals("Welcome to Home!",driver.findElement(By.xpath("//div[@id='root']//div[.='Welcome to Home!']")).getText());
+        assertEquals("Book Reservation App",driver.findElement(By.cssSelector(".display-3.fw-bold")).getText());
     }
     @Test
     void enterCategories(){

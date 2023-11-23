@@ -81,7 +81,7 @@ public class CategoriesApiTesting {
                 assertThat().
                 contentType(ContentType.TEXT).
                 statusCode(400).
-                body(equalTo("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters"));
+                body(equalTo("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 3 and 50 characters"));
 
 
     }
@@ -138,7 +138,7 @@ public class CategoriesApiTesting {
                 .contentType(ContentType.TEXT);
 
 
-        response.then().body(containsString("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters")).
+        response.then().body(containsString("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 3 and 50 characters")).
                 body(containsString("The field must not be empty"));
     }
 
@@ -180,7 +180,7 @@ public class CategoriesApiTesting {
         response.then().statusCode(400);
 
 
-        response.then().body(containsString("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 5 and 50 characters"));
+        response.then().body(containsString("Category name must start with an uppercase letter, followed by lowercase letters, without numbers, consecutive repeated characters, and a length between 3 and 50 characters"));
     }
 
     @Test
